@@ -1,11 +1,27 @@
 const express = require('express');
-const app = express();
-const port = 3000;
+const cors = require('cors');
+const path = require('path');
+const bodyParser = require('body-parser');
 
-app.get('/', (req, res) => {
-    res.send('Hello, World!');
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname)));
+
+// Chatbot endpoint
+app.post('/ask', (req, res) => {
+  const userMessage = req.body.message;
+  const dummyReply = `You said: "${userMessage}". I'm your Tamil Nadu Railway Assistant 🚆`;
+  res.json({ reply: dummyReply });
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+// Serve HTML
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`✅ Server running at http://localhost:${PORT}`);
 });
