@@ -8,7 +8,7 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #f4f8f7;
+      background: #ffffff;
     }
 
     /* Navbar styles */
@@ -43,74 +43,63 @@
       font-weight: 600;
     }
 
-    .container {
-      max-width: 600px;
-      margin: 40px auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      text-align: center;
+    /* Chat area */
+    .chat-container {
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: #f5f5f5;
     }
 
-    .container h2 {
-      color: #003366;
+    .chat-box {
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 10px;
+      background: white;
+      border-radius: 10px;
       margin-bottom: 10px;
     }
 
-    .container p {
-      color: #444;
-      font-size: 15px;
-      margin-bottom: 20px;
-    }
-
-    .feature-buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-
-    .feature-buttons button {
-      padding: 12px;
-      font-size: 14px;
-      font-weight: bold;
-      background-color: #e6f0ff;
-      border: 1px solid #cce0ff;
+    .message {
+      margin: 10px 0;
+      padding: 10px;
       border-radius: 8px;
-      color: #003399;
-      cursor: pointer;
-      transition: 0.3s ease;
+      line-height: 1.4;
+      max-width: 80%;
     }
 
-    .feature-buttons button:hover {
-      background-color: #cce0ff;
+    .user {
+      background-color: #d1ecf1;
+      text-align: right;
+      margin-left: auto;
     }
 
-    .chat-input {
+    .bot {
+      background-color: #f8d7da;
+      margin-right: auto;
+    }
+
+    .input-area {
       display: flex;
-      margin-top: 10px;
+      gap: 10px;
     }
 
-    .chat-input input {
+    #userInput {
       flex: 1;
-      padding: 12px;
-      border-radius: 6px 0 0 6px;
-      border: 1px solid #ccc;
-      outline: none;
+      padding: 10px;
+      font-size: 16px;
     }
 
-    .chat-input button {
-      background-color: #407BFF;
-      color: #fff;
-      padding: 12px 20px;
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
       border: none;
-      border-radius: 0 6px 6px 0;
+      border-radius: 8px;
+      font-weight: bold;
       cursor: pointer;
-    }
-
-    .chat-input button:hover {
-      background-color: #2e65d3;
     }
   </style>
 </head>
@@ -128,22 +117,52 @@
     </div>
   </div>
 
-  <!-- Main chatbot box -->
-  <div class="container">
-    <h2>Welcome to Tamil Nadu Railways Assistant</h2>
-    <p>I'm here to help you with all your railway inquiries.</p>
-
-    <div class="feature-buttons">
-      <button>Train Schedules<br><small>Get real-time timings</small></button>
-      <button>Ticket Booking<br><small>Booking assistance</small></button>
-      <button>Platform Info<br><small>Live updates</small></button>
-      <button>General Help<br><small>Railway services</small></button>
+  <!-- Chat Section -->
+  <div class="chat-container">
+    <div class="chat-box" id="chatBox">
+      <!-- Messages will appear here -->
     </div>
-
-    <div class="chat-input">
-      <input type="text" placeholder="Type your question here..." />
-      <button>Send</button>
+    <div class="input-area">
+      <input type="text" id="userInput" placeholder="Type your question here..." />
+      <button onclick="sendMessage()">Send</button>
     </div>
   </div>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const message = input.value.trim();
+      if (!message) return;
+
+      // Show user's message
+      addMessageToChat("user", message);
+      input.value = "";
+
+      // Get bot response from backend
+      try {
+        const response = await fetch("/api/railway-chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            messages: [{ role: "user", content: message }],
+          }),
+        });
+
+        const data = await response.json();
+        addMessageToChat("bot", data.message || "Sorry, I couldn’t understand that.");
+      } catch (error) {
+        addMessageToChat("bot", "Error contacting the assistant.");
+      }
+    }
+
+    function addMessageToChat(sender, text) {
+      const chatBox = document.getElementById("chatBox");
+      const messageDiv = document.createElement("div");
+      messageDiv.className = `message ${sender}`;
+      messageDiv.textContent = text;
+      chatBox.appendChild(messageDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
 </body>
 </html>
