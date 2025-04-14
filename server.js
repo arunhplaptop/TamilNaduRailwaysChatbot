@@ -13,8 +13,14 @@ app.use(bodyParser.json()); // Middleware to parse JSON bodies from requests
 // Serve static files (like your HTML, CSS, etc.)
 app.use(express.static(path.join(__dirname, "public")));
 
-// Import the railwayChat route
-const railwayChat = require("./routes/railwayChat");
+// Error handling for the railwayChat route
+let railwayChat;
+try {
+  railwayChat = require("./routes/railwayChat");
+} catch (err) {
+  console.error("Failed to load railwayChat route:", err);
+  process.exit(1); // Exit the server if the route is not found
+}
 app.use("/api/railway-chat", railwayChat);
 
 // Chatbot endpoint (dummy reply for testing)
