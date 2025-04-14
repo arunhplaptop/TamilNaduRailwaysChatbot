@@ -8,7 +8,7 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #ffffff;
+      background: #f4f8f7;
     }
 
     /* Navbar styles */
@@ -42,13 +42,83 @@
       text-decoration: none;
       font-weight: 600;
     }
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .container h2 {
+      color: #003366;
+      margin-bottom: 10px;
+    }
+
+    .container p {
+      color: #444;
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+
+    .feature-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .feature-buttons button {
+      padding: 12px;
+      font-size: 14px;
+      font-weight: bold;
+      background-color: #e6f0ff;
+      border: 1px solid #cce0ff;
+      border-radius: 8px;
+      color: #003399;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .feature-buttons button:hover {
+      background-color: #cce0ff;
+    }
+
+    .chat-input {
+      display: flex;
+      margin-top: 10px;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 12px;
+      border-radius: 6px 0 0 6px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    .chat-input button {
+      background-color: #407BFF;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 0 6px 6px 0;
+      cursor: pointer;
+    }
+
+    .chat-input button:hover {
+      background-color: #2e65d3;
+    }
   </style>
 </head>
 <body>
   <!-- Navbar -->
   <div class="navbar">
     <div style="display: flex; align-items: center;">
-      <img src="logo.png.png" alt="Tamil Nadu Railways Logo" />
+      <img src="logo.png" alt="Tamil Nadu Railways Logo" />
       <span class="navbar-title">Tamil Nadu Railways Chatbot</span>
     </div>
     <div class="nav-right">
@@ -58,6 +128,22 @@
     </div>
   </div>
 
-  <!-- Your existing chatbot content continues here... -->
+  <!-- Main chatbot box -->
+  <div class="container">
+    <h2>Welcome to Tamil Nadu Railways Assistant</h2>
+    <p>I'm here to help you with all your railway inquiries.</p>
+
+    <div class="feature-buttons">
+      <button>Train Schedules<br><small>Get real-time timings</small></button>
+      <button>Ticket Booking<br><small>Booking assistance</small></button>
+      <button>Platform Info<br><small>Live updates</small></button>
+      <button>General Help<br><small>Railway services</small></button>
+    </div>
+
+    <div class="chat-input">
+      <input type="text" placeholder="Type your question here..." />
+      <button>Send</button>
+    </div>
+  </div>
 </body>
 </html>
