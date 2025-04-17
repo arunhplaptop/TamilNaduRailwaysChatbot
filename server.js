@@ -1,4 +1,5 @@
-require('dotenv').config(); // Load environment variables
+require('dotenv').config(); // Load API key from .env
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -19,16 +20,13 @@ try {
   railwayChat = require("./routes/railwayChat");
 } catch (err) {
   console.error("Failed to load railwayChat route:", err.message);
+  process.exit(1);
 }
 app.use("/api/railway-chat", railwayChat);
 
 // Chatbot endpoint with OpenRouter GPT-3.5
 app.post('/ask', async (req, res) => {
   const userMessage = req.body.message;
-
-  if (!userMessage) {
-    return res.status(400).json({ reply: "Invalid request: Message is required." });
-  }
 
   try {
     const response = await axios.post(
@@ -45,11 +43,11 @@ app.post('/ask', async (req, res) => {
       }
     );
 
-    const botReply = response.data.choices[0]?.message?.content || "No reply available.";
+    const botReply = response.data.choices[0].message.content;
     res.json({ reply: botReply });
   } catch (err) {
     console.error("OpenRouter API Error:", err.response?.data || err.message);
-    res.status(500).json({ reply: "Sorry, something went wrong. Please try again later." });
+    res.status(500).json({ reply: "Sorry, something went wrong." });
   }
 });
 
@@ -58,7 +56,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Start server
 app.listen(PORT, () => {
-  console.log(`✅ Server is running at http://localhost:${PORT}`);
+  console.log(`✅ Server running at http://localhost:${PORT}`);
 });
