@@ -11,7 +11,6 @@
       background: #f4f8f7;
     }
 
-    /* Navbar styles */
     .navbar {
       background: linear-gradient(to right, #FF9933, #ffffff, #138808);
       padding: 10px 20px;
@@ -141,10 +140,9 @@
   </style>
 </head>
 <body>
-  <!-- Navbar -->
   <div class="navbar">
     <div style="display: flex; align-items: center;">
-      <img src="logo.png" alt="Tamil Nadu Railways Logo" />
+      <img src="/logo.png" alt="Tamil Nadu Railways Logo" />
       <span class="navbar-title">Tamil Nadu Railways Chatbot</span>
     </div>
     <div class="nav-right">
@@ -154,7 +152,6 @@
     </div>
   </div>
 
-  <!-- Main chatbot box -->
   <div class="container">
     <h2>Welcome to Tamil Nadu Railways Assistant</h2>
     <p>I'm here to help you with all your railway inquiries.</p>
@@ -166,9 +163,7 @@
       <button onclick="sendQuick('General Help')">General Help<br><small>Railway services</small></button>
     </div>
 
-    <div class="chat-box" id="chatBox">
-      <!-- Chat messages will go here -->
-    </div>
+    <div class="chat-box" id="chatBox"></div>
 
     <div class="chat-input">
       <input type="text" id="userInput" placeholder="Type your question here..." />
@@ -185,18 +180,16 @@
       addChat("user", message);
       input.value = "";
 
-      const response = await fetch("/api/railway-chat", {
+      const response = await fetch("/ask", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          messages: [{ role: "user", content: message }],
-        }),
+        body: JSON.stringify({ message }),
       });
 
       const data = await response.json();
-      addChat("bot", data.message || "Sorry, something went wrong.");
+      addChat("bot", data.reply || "Sorry, something went wrong.");
     }
 
     function sendQuick(message) {
