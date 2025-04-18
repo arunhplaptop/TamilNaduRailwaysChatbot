@@ -9,6 +9,11 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 10000;
 
+// Check if the Hugging Face API key is present
+if (!process.env.HF_API_KEY) {
+  console.warn("⚠️ Hugging Face API key is missing!");
+}
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
