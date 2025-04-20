@@ -1,4 +1,4 @@
-// ✅ Fixed server.js with OpenAI API integration and greetings
+// ✅ Final fixed server.js with OpenAI API integration and payment redirection
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -61,19 +61,15 @@ app.post('/ask', async (req, res) => {
       }
     }
   } else if (trainChoices.length > 0 && (
-  message === '1' || message === '2' ||
-  message.includes("yes") || message.includes("payment") ||
-  trainChoices.some(t => t.toLowerCase().includes(message))
-)) {
-  const selectedTrain = 
-    message === '1' ? trainChoices[0] :
-    message === '2' ? trainChoices[1] :
-    trainChoices.find(t => t.toLowerCase().includes(message)) || trainChoices[0];
+    message === '1' || message === '2' ||
+    message.includes("yes") || message.includes("payment") ||
+    trainChoices.some(t => t.toLowerCase().includes(message))
+  )) {
+    const selectedTrain = 
+      message === '1' ? trainChoices[0] :
+      message === '2' ? trainChoices[1] :
+      trainChoices.find(t => t.toLowerCase().includes(message)) || trainChoices[0];
 
-  reply = `✅ You selected: ${selectedTrain}\nRedirecting to payment page...`;
-  res.json({ reply, redirect: "/payment.html?train=" + encodeURIComponent(selectedTrain) });
-  return;
-}
     reply = `✅ You selected: ${selectedTrain}\nRedirecting to payment page...`;
     res.json({ reply, redirect: "/payment.html?train=" + encodeURIComponent(selectedTrain) });
     return;
@@ -93,22 +89,20 @@ app.post('/ask', async (req, res) => {
       reply = "⚠️ Please provide the route in the format: source to destination.";
     }
   } else if (userState.awaitingDate) {
-  // If user replies with a train name instead of a date — redirect
-  if (trainChoices.some(t => t.toLowerCase() === message)) {
-    const selectedTrain = trainChoices.find(t => t.toLowerCase() === message);
-    reply = `✅ You selected: ${selectedTrain}\nRedirecting to payment page...`;
-    userState.awaitingDate = false;
-    userState.pendingRoute = '';
-    res.json({ reply, redirect: "/payment.html?train=" + encodeURIComponent(selectedTrain) });
-    return;
-  }
+    if (trainChoices.some(t => t.toLowerCase() === message)) {
+      const selectedTrain = trainChoices.find(t => t.toLowerCase() === message);
+      reply = `✅ You selected: ${selectedTrain}\nRedirecting to payment page...`;
+      userState.awaitingDate = false;
+      userState.pendingRoute = '';
+      res.json({ reply, redirect: "/payment.html?train=" + encodeURIComponent(selectedTrain) });
+      return;
+    }
 
-  // Otherwise assume it's a date
-  userState.awaitingDate = false;
-  reply = `🎟️ Ticket booked for ${userState.pendingRoute} on ${message}. Safe travels!`;
-  userState.pendingRoute = '';
-}
- else if (message.includes("book") || message.includes("ticket")) {
+    userState.awaitingDate = false;
+    reply = `🎟️ Ticket booked for ${userState.pendingRoute} on ${message}. Safe travels!`;
+    userState.pendingRoute = '';
+
+  } else if (message.includes("book") || message.includes("ticket")) {
     userState.awaitingRoute = true;
     reply = "🎟️ I'd be happy to help you book a ticket. Please provide your route (e.g. Chennai to Madurai).";
   } else if (message.includes("hi") || message.includes("hello") || message.includes("hey")) {
