@@ -48,10 +48,7 @@ app.post('/ask', async (req, res) => {
     if (match) {
       const routeKey = `${match[1].trim()} to ${match[2].trim()}`.toLowerCase();
       if (routes[routeKey]) {
-        trainChoices = [
-          routes[routeKey],
-          "Vaigai Express (12635) - 13:20 → 21:25"
-        ];
+        trainChoices = [routes[routeKey], "Vaigai Express (12635) - 13:20 → 21:25"];
         reply = `Sure! Popular Trains:\n`;
         trainChoices.forEach((train, i) => {
           reply += `${i + 1}. ${train}\n`;
@@ -81,6 +78,7 @@ app.post('/ask', async (req, res) => {
         userState.awaitingRoute = false;
         userState.awaitingDate = true;
         userState.pendingRoute = routeKey;
+        trainChoices = [routes[routeKey], "Vaigai Express (12635) - 13:20 → 21:25"];
         reply = `✅ Route found: ${routeKey}. Train: ${routes[routeKey]}\n📅 Please provide your travel date (e.g. 2025-04-25).`;
       } else {
         reply = `❌ Sorry, no train found for \"${routeKey}\".`;
@@ -111,7 +109,8 @@ app.post('/ask', async (req, res) => {
     const routeMatch = message.match(/([a-z\s]+)\s*to\s*([a-z\s]+)/i);
     const routeKey = `${routeMatch[1].trim()} to ${routeMatch[2].trim()}`.toLowerCase();
     if (routes[routeKey]) {
-      reply = `✅ Route: ${routeKey}\n🚆 Train: ${routes[routeKey]}`;
+      trainChoices = [routes[routeKey], "Vaigai Express (12635) - 13:20 → 21:25"];
+      reply = `✅ Route: ${routeKey}\n🚆 Train: ${routes[routeKey]}\n\nType 'yes' or the train name to proceed to payment.`;
     } else {
       reply = `❌ Sorry, no train found for \"${routeKey}\".`;
     }
