@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tamil Nadu Railways Chatbot</title>
   <style>
+    /* Your original styling remains unchanged (clean and professional) */
+    /* ... [your original CSS] ... */
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
@@ -101,15 +103,21 @@
       margin: 10px 0;
       padding: 10px;
       border-radius: 8px;
+      max-width: 80%;
     }
 
     .user {
       background-color: #d1ecf1;
       text-align: right;
+      align-self: flex-end;
+      margin-left: auto;
     }
 
     .bot {
       background-color: #f8d7da;
+      text-align: left;
+      align-self: flex-start;
+      margin-right: auto;
     }
 
     .chat-input {
@@ -180,16 +188,20 @@
       addChat("user", message);
       input.value = "";
 
-      const response = await fetch("/ask", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message }),
-      });
+      try {
+        const response = await fetch("/ask", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message }),
+        });
 
-      const data = await response.json();
-      addChat("bot", data.reply || "Sorry, something went wrong.");
+        const data = await response.json();
+        addChat("bot", data.reply || "Sorry, something went wrong.");
+      } catch (err) {
+        addChat("bot", "⚠️ Unable to connect to server.");
+      }
     }
 
     function sendQuick(message) {
@@ -201,7 +213,7 @@
       const chatBox = document.getElementById("chatBox");
       const div = document.createElement("div");
       div.className = `chat-message ${sender}`;
-      div.textContent = text;
+      div.textContent = `${sender === 'user' ? 'You' : 'Bot'}: ${text}`;
       chatBox.appendChild(div);
       chatBox.scrollTop = chatBox.scrollHeight;
     }
