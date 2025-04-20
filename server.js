@@ -26,7 +26,7 @@ app.post('/ask', (req, res) => {
 
   // Booking: Awaiting Route
   if (userState.awaitingRoute) {
-    const match = message.match(/([a-z\s]+)\s*to\s*([a-z\s]+)/i);
+    const match = message.match(/(?:train\s+from\s+)?([a-z\s]+)\s*to\s*([a-z\s]+)/i);
     if (match) {
       const routeKey = `${match[1].trim()} to ${match[2].trim()}`.toLowerCase();
       if (routes[routeKey]) {
