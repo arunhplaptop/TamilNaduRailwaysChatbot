@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const routes = require('./routes');  // Import routes.js
+const routes = require('./railwayChat');
+
 
 const app = express();
 const port = process.env.PORT || 3000;
