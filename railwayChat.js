@@ -1,4 +1,3 @@
-// railwayChat.js
 
 const routes = {
   "chennai to madurai": "Pandian Express (12637) - 21:40 → 05:40",
