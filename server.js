@@ -1,71 +1,31 @@
-require('dotenv').config(); // ✅ Load .env variables
-
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 const bodyParser = require('body-parser');
-const axios = require('axios');
 
 const app = express();
-const PORT = process.env.PORT || 10000;
+const port = process.env.PORT || 3000;
 
-// Check if the Hugging Face API key is present
-if (!process.env.HF_API_KEY) {
-  console.warn("⚠️ Hugging Face API key is missing!");
-}
-
-// Middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static('public'));
 
-// Optional: Load custom routes if you have any
-let railwayChat;
-try {
-  railwayChat = require("./routes/railwayChat");
-  app.use("/api/railway-chat", railwayChat);
-} catch (err) {
-  console.warn("No custom route loaded:", err.message);
-}
+app.post('/chat', (req, res) => {
+    const userMessage = req.body.message.toLowerCase();
+    let reply = "Sorry, I didn't understand that. Try asking about train timings, booking, or platform info.";
 
-// 🧠 Chatbot endpoint using Hugging Face
-app.post('/ask', async (req, res) => {
-  const userMessage = req.body.message;
+    if (userMessage.includes("train") || userMessage.includes("schedule") || userMessage.includes("timing")) {
+        reply = `Sure! Please tell me your source and destination stations.\nExample: "Chennai to Madurai"\n\nPopular Trains:\n1. Pandian Express (12637) - 21:40 → 05:40\n2. Vaigai Express (12635) - 13:20 → 21:25`;
+    } else if (userMessage.includes("book") || userMessage.includes("ticket")) {
+        reply = "I'd be happy to help you book a ticket. Please provide your route and travel date.";
+    } else if (userMessage.includes("platform")) {
+        reply = "Platform information is available closer to departure. Please tell me the train name or number.";
+    } else if (userMessage.includes("help") || userMessage.includes("services")) {
+        reply = "I'm here to assist you with:\n- Train Schedules\n- Ticket Booking\n- Platform Info\n- General Railway Help\nHow can I help you today?";
+    }
 
-  try {
-    const hfResponse = await axios.post(
-      'https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta',
-      {
-        inputs: `<|user|>\n${userMessage}\n<|assistant|>`,
-        parameters: {
-          max_new_tokens: 200,
-          temperature: 0.7,
-        }
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.HF_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    const rawText = hfResponse.data[0].generated_text;
-    const botReply = rawText.split("<|assistant|>").pop().trim();
-    res.json({ reply: botReply });
-
-  } catch (err) {
-    console.error("Hugging Face API Error:", err.response?.data || err.message);
-    res.status(500).json({ reply: "Sorry, something went wrong with Hugging Face API." });
-  }
+    res.json({ reply });
 });
 
-// Serve frontend (optional)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// Start server
-app.listen(PORT, () => {
-  console.log(`✅ Server running at http://localhost:${PORT}`);
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
 });
