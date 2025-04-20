@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ticket Payment - Tamil Nadu Railways</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f8f7;
+    }
+    .navbar {
+      background: linear-gradient(to right, #FF9933, #ffffff, #138808);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .navbar img {
+      height: 50px;
+    }
+    .navbar-title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #000080;
+      margin-left: 10px;
+    }
+    .container {
+      max-width: 500px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #407BFF;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2e65d3;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <img src="/logo.png" alt="Tamil Nadu Railways Logo">
+    <span class="navbar-title">Tamil Nadu Railways</span>
+  </div>
+
+  <div class="container">
+    <h2>Ticket Payment</h2>
+    <form id="paymentForm">
+      <input type="text" id="trainName" readonly>
+      <input type="text" placeholder="Passenger Name" required>
+      <input type="date" required>
+      <input type="number" placeholder="Amount (₹)" required>
+      <select required>
+        <option value="">Select Payment Mode</option>
+        <option value="upi">UPI</option>
+        <option value="card">Credit/Debit Card</option>
+        <option value="netbanking">Net Banking</option>
+      </select>
+      <button type="submit">Pay Now</button>
+    </form>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const trainName = params.get("train");
+    document.getElementById("trainName").value = trainName || "";
+
+    document.getElementById("paymentForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("✅ Payment successful! Your ticket is confirmed.");
+      window.location.href = "/index (6).html";
+    });
+  </script>
+</body>
+</html>
