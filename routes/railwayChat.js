@@ -1,16 +1,3 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-
-const app = express();
-const port = process.env.PORT || 3000;
-
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
-app.use(express.static('public'));
-
-// Popular routes and trains
 // routes.js
 
 const routes = {
@@ -45,46 +32,3 @@ const routes = {
 };
 
 module.exports = routes;
-
-// ✅ Custom chatbot logic (No Hugging Face needed)
-app.post('/chat', (req, res) => {
-  const userMessage = req.body.message.toLowerCase().trim();
-  let reply = "Sorry, I didn’t get that. Try asking about train schedules, booking, or help.";
-
-  // Handle train schedule requests
-  if (userMessage.includes("train") || userMessage.includes("schedule") || userMessage.includes("timing")) {
-    reply = `Sure! Please tell me your source and destination stations.\nExample: "Chennai to Madurai"\n\nPopular Trains:\n1. Pandian Express (12637) - 21:40 → 05:40\n2. Vaigai Express (12635) - 13:20 → 21:25\n3. Cholan Express (16170) - 19:20 → 04:30`;
-  } 
-  // Handle ticket booking requests
-  else if (userMessage.includes("book") || userMessage.includes("ticket")) {
-    reply = "I'd be happy to help you book a ticket. Please provide your route and travel date.";
-
-    // Check if the user provided a route like "Chennai to Madurai"
-    const routeMatch = userMessage.match(/([a-zA-Z\s]+)\s*to\s*([a-zA-Z\s]+)/);
-    if (routeMatch) {
-      const source = routeMatch[1].trim();
-      const destination = routeMatch[2].trim();
-      const routeKey = `${source.toLowerCase()} to ${destination.toLowerCase()}`;
-
-      if (routes[routeKey]) {
-        reply = `You have selected: ${source} to ${destination}. Here's a popular train: ${routes[routeKey]}. Please provide your travel date.`;
-      } else {
-        reply = `Sorry, I couldn't find that route. Please check the route and try again.`;
-      }
-    }
-  }
-  // Handle platform info requests
-  else if (userMessage.includes("platform")) {
-    reply = "Platform info will be available closer to departure. Tell me the train name or number for updates.";
-  } 
-  // Handle general help requests
-  else if (userMessage.includes("help") || userMessage.includes("services")) {
-    reply = "I'm here to assist you with:\n- 🚆 Train Schedules\n- 🎟️ Ticket Booking\n- 🛤️ Platform Info\n- ℹ️ General Railway Help\nHow can I assist you today?";
-  }
-
-  res.json({ reply });
-});
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
