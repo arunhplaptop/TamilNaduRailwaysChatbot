@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tamil Nadu Railways Chatbot</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f8f7;
+    }
+
+    .navbar {
+      background: linear-gradient(to right, #FF9933, #ffffff, #138808);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .navbar img {
+      height: 50px;
+    }
+
+    .navbar-title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #000080;
+      margin-left: 10px;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-right a {
+      color: #000;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .container h2 {
+      color: #003366;
+      margin-bottom: 10px;
+    }
+
+    .container p {
+      color: #444;
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+
+    .feature-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .feature-buttons button {
+      padding: 12px;
+      font-size: 14px;
+      font-weight: bold;
+      background-color: #e6f0ff;
+      border: 1px solid #cce0ff;
+      border-radius: 8px;
+      color: #003399;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .feature-buttons button:hover {
+      background-color: #cce0ff;
+    }
+
+    .chat-box {
+      text-align: left;
+      background: #fefefe;
+      padding: 10px;
+      border-radius: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+    }
+
+    .chat-message {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      max-width: 80%;
+    }
+
+    .user {
+      background-color: #d1ecf1;
+      text-align: right;
+      align-self: flex-end;
+      margin-left: auto;
+    }
+
+    .bot {
+      background-color: #f8d7da;
+      text-align: left;
+      align-self: flex-start;
+      margin-right: auto;
+    }
+
+    .chat-input {
+      display: flex;
+      margin-top: 10px;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 12px;
+      border-radius: 6px 0 0 6px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    .chat-input button {
+      background-color: #407BFF;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 0 6px 6px 0;
+      cursor: pointer;
+    }
+
+    .chat-input button:hover {
+      background-color: #2e65d3;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div style="display: flex; align-items: center;">
+      <img src="/logo.png" alt="Tamil Nadu Railways Logo" />
+      <span class="navbar-title">Tamil Nadu Railways Chatbot</span>
+    </div>
+    <div class="nav-right">
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>Welcome to Tamil Nadu Railways Assistant</h2>
+    <p>I'm here to help you with all your railway inquiries.</p>
+
+    <div class="feature-buttons">
+      <button onclick="sendQuick('Train Schedule')">Train Schedules<br><small>Get real-time timings</small></button>
+      <button onclick="sendQuick('Ticket Booking')">Ticket Booking<br><small>Booking assistance</small></button>
+      <button onclick="sendQuick('Platform Info')">Platform Info<br><small>Live updates</small></button>
+      <button onclick="sendQuick('General Help')">General Help<br><small>Railway services</small></button>
+    </div>
+
+    <div class="chat-box" id="chatBox"></div>
+
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Type your question here..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const message = input.value.trim();
+      if (!message) return;
+
+      addChat("user", message);
+      input.value = "";
+
+      try {
+        const response = await fetch("http://localhost:3000/ask", {  // Updated URL with port 3000
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message }),
+        });
+
+        const data = await response.json();
+        addChat("bot", data.reply || "Sorry, something went wrong.");
+      } catch (err) {
+        addChat("bot", "⚠️ Unable to connect to server.");
+      }
+    }
+
+    function sendQuick(message) {
+      document.getElementById("userInput").value = message;
+      sendMessage();
+    }
+
+    function addChat(sender, text) {
+      const chatBox = document.getElementById("chatBox");
+      const div = document.createElement("div");
+      div.className = `chat-message ${sender}`;
+      div.textContent = `${sender === 'user' ? 'You' : 'Bot'}: ${text}`;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
+</body>
+</html>
