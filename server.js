@@ -1,23 +1,25 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const routes = require('./railwayChat');  // ✅ Use the full railwayChat.js route list
+const routes = require('./routes');  // Import routes.js
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// 💡 In-memory user session (for mock booking)
+// User state to manage flow
 let userState = {
   awaitingRoute: false,
   awaitingDate: false,
-  pendingRoute: ''
+  pendingRoute: '',
 };
 
-app.post('/ask', (req, res) => {  // ✅ Correct endpoint
+// Chatbot logic
+app.post('/ask', (req, res) => {
   const message = req.body.message.toLowerCase().trim();
   let reply = "Sorry, I didn’t get that. Try asking about train schedules, booking, or help.";
 
@@ -35,7 +37,7 @@ app.post('/ask', (req, res) => {  // ✅ Correct endpoint
         reply = `❌ Sorry, no train found for "${routeKey}". Please check and try again.`;
       }
     } else {
-      reply = "⚠️ Please provide route in format: source to destination. Example: Chennai to Madurai.";
+      reply = "⚠️ Please provide the route in the format: source to destination. Example: Chennai to Madurai.";
     }
   }
   // Booking: Awaiting Date
@@ -44,12 +46,12 @@ app.post('/ask', (req, res) => {  // ✅ Correct endpoint
     reply = `🎟️ Ticket booked for ${userState.pendingRoute} on ${message}. Safe travels!`;
     userState.pendingRoute = '';
   }
-  // New Booking Intent
+  // New booking intent
   else if (message.includes("book") || message.includes("ticket")) {
     userState.awaitingRoute = true;
     reply = "🎟️ I'd be happy to help you book a ticket. Please provide your route (e.g. Chennai to Madurai).";
   }
-  // Direct Route Query (even without booking)
+  // Direct route query (anytime)
   else if (message.match(/([a-z\s]+)\s*to\s*([a-z\s]+)/i)) {
     const routeMatch = message.match(/([a-z\s]+)\s*to\s*([a-z\s]+)/i);
     const routeKey = `${routeMatch[1].trim()} to ${routeMatch[2].trim()}`.toLowerCase();
@@ -65,7 +67,7 @@ app.post('/ask', (req, res) => {  // ✅ Correct endpoint
     let count = 1;
     for (let route in routes) {
       reply += `${count}. ${route} → ${routes[route]}\n`;
-      if (++count > 5) break;  // show top 5
+      if (++count > 5) break;
     }
     reply += "\n📝 Ask 'Chennai to Madurai' to get specific details.";
   }
@@ -75,7 +77,7 @@ app.post('/ask', (req, res) => {  // ✅ Correct endpoint
   }
   // General Help
   else if (message.includes("help") || message.includes("services")) {
-    reply = "🤖 I can assist you with:\n- 🚆 Train Schedules\n- 🎟️ Ticket Booking\n- 🛤️ Platform Info\n- ℹ️ General Railway Help\n\nJust say 'book ticket' or 'Chennai to Madurai'";
+    reply = "🤖 I can assist you with:\n- 🚆 Train Schedules\n- 🎟️ Ticket Booking\n- 🛤️ Platform Info\n- ℹ️ General Railway Help\n\nJust say 'book ticket' or 'chennai to madurai'.";
   }
 
   res.json({ reply });
