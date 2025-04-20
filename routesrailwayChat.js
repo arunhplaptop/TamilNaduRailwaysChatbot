@@ -1,38 +1,16 @@
-// routes/railwayChat.js
-const express = require("express");
-const router = express.Router();
-const fetch = require("node-fetch");
+// railwayChat.js
 
-router.post("/", async (req, res) => {
-  const messages = req.body.messages;
+const routes = {
+  "chennai to madurai": "Pandian Express (12637) - 21:40 → 05:40",
+  "chennai to coimbatore": "Covai Express (12677) - 05:00 → 09:30",
+  "chennai to trichy": "Cholan Express (16170) - 19:20 → 04:30",
+  "chennai to bangalore": "Bangalore Express (12673) - 21:20 → 05:50",
+  "madurai to coimbatore": "Vaigai Express (12635) - 13:20 → 21:25",
+  "madurai to trichy": "Rockfort Express (12671) - 08:40 → 09:50",
+  "coimbatore to bangalore": "Coimbatore Express (12643) - 06:00 → 10:30",
+  "trichy to bangalore": "Tiruchendur Express (12679) - 16:20 → 05:00",
+  "chennai to salem": "Salem Express (12681) - 12:15 → 17:30",
+  "chennai to pondicherry": "Pondy Express (12605) - 06:30 → 09:45"
+};
 
-  if (!messages || !Array.isArray(messages) || messages.length === 0) {
-    return res.json({ error: "Messages array is required", status: false });
-  }
-
-  const systemContext =
-    "You are a helpful Tamil Nadu Railways assistant. You can help with train timings, ticket booking information, and general railway inquiries. Always be polite and provide accurate information about Tamil Nadu Railways services.";
-
-  try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer YOUR_OPENAI_API_KEY`, // Replace with your actual API key
-      },
-      body: JSON.stringify({
-        model: "gpt-4",
-        messages: [{ role: "system", content: systemContext }, ...messages],
-      }),
-    });
-
-    const data = await response.json();
-    const reply = data.choices?.[0]?.message?.content || "No response";
-
-    res.json({ message: reply, status: true });
-  } catch (error) {
-    res.json({ error: error.message, status: false });
-  }
-});
-
-module.exports = router;
+module.exports = routes;
