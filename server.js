@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 // ✅ Custom chatbot logic (No Hugging Face needed)
-app.post('/chat', (req, res) => {
+app.post('/ask', (req, res) => {
   const userMessage = req.body.message.toLowerCase();
   let reply = "Sorry, I didn’t get that. Try asking about train schedules, booking, or help.";
 
@@ -26,6 +26,11 @@ app.post('/chat', (req, res) => {
   }
 
   res.json({ reply });
+});
+
+// Serve frontend (index.html)
+app.get('*', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
 });
 
 app.listen(port, () => {

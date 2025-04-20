@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tamil Nadu Railways Chatbot</title>
   <style>
-    /* Your original styling remains unchanged (clean and professional) */
-    /* ... [your original CSS] ... */
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
@@ -189,7 +187,7 @@
       input.value = "";
 
       try {
-        const response = await fetch("/ask", {
+        const response = await fetch("http://localhost:3000/ask", {  // Updated URL with port 3000
           method: "POST",
           headers: {
             "Content-Type": "application/json",
