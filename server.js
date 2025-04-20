@@ -24,20 +24,23 @@ const routes = {
   "chennai to pondicherry": "Pondy Express (12605) - 06:30 → 09:45",
 };
 
-// ✅ Custom chatbot logic (No Hugging Face needed)
+// ✅ Custom chatbot logic
 app.post('/chat', (req, res) => {
-  const userMessage = req.body.message.toLowerCase();
+  const userMessage = req.body.message?.toLowerCase().trim();
+  if (!userMessage) {
+    return res.status(400).json({ error: "Message is required!" });
+  }
+
   let reply = "Sorry, I didn’t get that. Try asking about train schedules, booking, or help.";
 
   // Handle train schedule requests
   if (userMessage.includes("train") || userMessage.includes("schedule") || userMessage.includes("timing")) {
-    reply = `Sure! Please tell me your source and destination stations.\nExample: "Chennai to Madurai"\n\nPopular Trains:\n1. Pandian Express (12637) - 21:40 → 05:40\n2. Vaigai Express (12635) - 13:20 → 21:25\n3. Cholan Express (16170) - 19:20 → 04:30`;
-  } 
-  // Handle ticket booking requests
-  else if (userMessage.includes("book") || userMessage.includes("ticket")) {
-    reply = "I'd be happy to help you book a ticket. Please provide your route and travel date.";
+    reply = `Sure! Please tell me your source and destination stations.\nExample: "Chennai to Madurai"\n\nPopular Trains:\n1. Pandian Express (12637)\n2. Vaigai Express (12635)\n3. Cholan Express (16170)`;
+  }
 
-    // Check if the user provided a route like "Chennai to Madurai"
+  // Handle ticket booking
+  else if (userMessage.includes("book") || userMessage.includes("ticket")) {
+    // Look for route in message
     const routeMatch = userMessage.match(/([a-zA-Z\s]+)\s*to\s*([a-zA-Z\s]+)/);
     if (routeMatch) {
       const source = routeMatch[1].trim();
@@ -45,17 +48,21 @@ app.post('/chat', (req, res) => {
       const routeKey = `${source.toLowerCase()} to ${destination.toLowerCase()}`;
 
       if (routes[routeKey]) {
-        reply = `You have selected: ${source} to ${destination}. Here's a popular train: ${routes[routeKey]}. Please provide your travel date.`;
+        reply = `You have selected: ${source} to ${destination}.\nHere's a popular train: ${routes[routeKey]}.\nPlease provide your travel date.`;
       } else {
         reply = `Sorry, I couldn't find that route. Please check the route and try again.`;
       }
+    } else {
+      reply = "I'd be happy to help you book a ticket. Please provide your route and travel date. Example: 'Chennai to Madurai on April 25'";
     }
   }
+
   // Handle platform info requests
   else if (userMessage.includes("platform")) {
-    reply = "Platform info will be available closer to departure. Tell me the train name or number for updates.";
-  } 
-  // Handle general help requests
+    reply = "Platform info will be available closer to departure. Please tell me the train name or number for updates.";
+  }
+
+  // General help
   else if (userMessage.includes("help") || userMessage.includes("services")) {
     reply = "I'm here to assist you with:\n- 🚆 Train Schedules\n- 🎟️ Ticket Booking\n- 🛤️ Platform Info\n- ℹ️ General Railway Help\nHow can I assist you today?";
   }
@@ -63,6 +70,7 @@ app.post('/chat', (req, res) => {
   res.json({ reply });
 });
 
+// ✅ Start the server
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`✅ Tamil Nadu Railways chatbot server running on port ${port}`);
 });
