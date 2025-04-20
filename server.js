@@ -1,8 +1,9 @@
-// ✅ Fixed server.js
+// ✅ Fixed server.js with OpenAI API integration
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const routes = require('./railwayChat'); // ✅ corrected path
+const fetch = require('node-fetch');
+const routes = require('./railwayChat');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,7 +20,26 @@ let userState = {
 
 let trainChoices = [];
 
-app.post('/ask', (req, res) => {
+const OPENAI_API_KEY = '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';
+
+async function askAI(question) {
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${OPENAI_API_KEY}`
+    },
+    body: JSON.stringify({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: question }]
+    })
+  });
+
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+app.post('/ask', async (req, res) => {
   const message = req.body.message.toLowerCase().trim();
   let reply = "Sorry, I didn’t get that. Try asking about train schedules, booking, or help.";
 
@@ -89,6 +109,9 @@ app.post('/ask', (req, res) => {
     reply = "🛤️ Platform info available closer to departure.";
   } else if (message.includes("help") || message.includes("services")) {
     reply = "🤖 I can help with:\n- 🚆 Train Schedules\n- 🎟️ Ticket Booking\n- 🛤️ Platform Info\n- ℹ️ Railway Help\nSay 'book ticket' or 'Chennai to Madurai'.";
+  } else {
+    const aiResponse = await askAI(message);
+    reply = aiResponse;
   }
 
   res.json({ reply });
