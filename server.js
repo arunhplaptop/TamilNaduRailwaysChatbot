@@ -60,11 +60,20 @@ app.post('/ask', async (req, res) => {
         reply = `❌ Sorry, no train found for \"${routeKey}\".`;
       }
     }
-  } else if (trainChoices.length > 0 && (message === '1' || message === '2' || trainChoices.some(t => t.toLowerCase().includes(message)))) {
-    const selectedTrain = message === '1' ? trainChoices[0]
-      : message === '2' ? trainChoices[1]
-      : trainChoices.find(t => t.toLowerCase().includes(message));
+  } else if (trainChoices.length > 0 && (
+  message === '1' || message === '2' ||
+  message.includes("yes") || message.includes("payment") ||
+  trainChoices.some(t => t.toLowerCase().includes(message))
+)) {
+  const selectedTrain = 
+    message === '1' ? trainChoices[0] :
+    message === '2' ? trainChoices[1] :
+    trainChoices.find(t => t.toLowerCase().includes(message)) || trainChoices[0];
 
+  reply = `✅ You selected: ${selectedTrain}\nRedirecting to payment page...`;
+  res.json({ reply, redirect: "/payment.html?train=" + encodeURIComponent(selectedTrain) });
+  return;
+}
     reply = `✅ You selected: ${selectedTrain}\nRedirecting to payment page...`;
     res.json({ reply, redirect: "/payment.html?train=" + encodeURIComponent(selectedTrain) });
     return;
