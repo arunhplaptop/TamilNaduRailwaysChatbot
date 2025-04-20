@@ -84,10 +84,22 @@ app.post('/ask', async (req, res) => {
       reply = "⚠️ Please provide the route in the format: source to destination.";
     }
   } else if (userState.awaitingDate) {
+  // If user replies with a train name instead of a date — redirect
+  if (trainChoices.some(t => t.toLowerCase() === message)) {
+    const selectedTrain = trainChoices.find(t => t.toLowerCase() === message);
+    reply = `✅ You selected: ${selectedTrain}\nRedirecting to payment page...`;
     userState.awaitingDate = false;
-    reply = `🎟️ Ticket booked for ${userState.pendingRoute} on ${message}. Safe travels!`;
     userState.pendingRoute = '';
-  } else if (message.includes("book") || message.includes("ticket")) {
+    res.json({ reply, redirect: "/payment.html?train=" + encodeURIComponent(selectedTrain) });
+    return;
+  }
+
+  // Otherwise assume it's a date
+  userState.awaitingDate = false;
+  reply = `🎟️ Ticket booked for ${userState.pendingRoute} on ${message}. Safe travels!`;
+  userState.pendingRoute = '';
+}
+ else if (message.includes("book") || message.includes("ticket")) {
     userState.awaitingRoute = true;
     reply = "🎟️ I'd be happy to help you book a ticket. Please provide your route (e.g. Chennai to Madurai).";
   } else if (message.includes("hi") || message.includes("hello") || message.includes("hey")) {
