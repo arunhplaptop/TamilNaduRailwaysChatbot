@@ -1,4 +1,4 @@
-// ✅ Fixed server.js with OpenAI API integration
+// ✅ Fixed server.js with OpenAI API integration and greetings
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -90,6 +90,8 @@ app.post('/ask', async (req, res) => {
   } else if (message.includes("book") || message.includes("ticket")) {
     userState.awaitingRoute = true;
     reply = "🎟️ I'd be happy to help you book a ticket. Please provide your route (e.g. Chennai to Madurai).";
+  } else if (message.includes("hi") || message.includes("hello") || message.includes("hey")) {
+    reply = "👋 Hello! How can I assist you today? You can ask me to book tickets or check train schedules!";
   } else if (message.match(/([a-z\s]+)\s*to\s*([a-z\s]+)/i)) {
     const routeMatch = message.match(/([a-z\s]+)\s*to\s*([a-z\s]+)/i);
     const routeKey = `${routeMatch[1].trim()} to ${routeMatch[2].trim()}`.toLowerCase();
