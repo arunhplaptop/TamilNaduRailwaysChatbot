@@ -88,6 +88,17 @@ app.post('/ask', async (req, res) => {
       reply = "⚠️ Please provide the route in the format: source to destination.";
     }
   } else if (userState.awaitingDate) {
+  const travelDate = message;
+  const selectedRoute = userState.pendingRoute;
+  userState.awaitingDate = false;
+  userState.pendingRoute = '';
+
+  const paymentURL = `/payment.html?route=${encodeURIComponent(selectedRoute)}&date=${encodeURIComponent(travelDate)}`;
+  reply = `✅ Route confirmed: ${selectedRoute} on ${travelDate}. Redirecting to payment page...`;
+
+  res.json({ reply, redirect: paymentURL });
+  return;
+}
     userState.awaitingDate = false;
     reply = `🎟️ Ticket booked for ${userState.pendingRoute} on ${message}. Safe travels!`;
     userState.pendingRoute = '';
