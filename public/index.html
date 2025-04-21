@@ -115,7 +115,12 @@
     .chat-input {
       display: flex;
       margin-top: 10px;
-      align-items: center;
+    }
+
+    .chat-input img {
+      height: 35px;
+      margin-right: 10px;
+      animation: move 1.5s infinite alternate;
     }
 
     .chat-input input {
@@ -137,12 +142,6 @@
 
     .chat-input button:hover {
       background-color: #2e65d3;
-    }
-
-    .chatbot-train {
-      height: 35px;
-      margin-right: 10px;
-      animation: move 1.5s infinite alternate;
     }
 
     @keyframes move {
@@ -169,17 +168,16 @@
     <p>I'm here to help you with all your railway inquiries.</p>
 
     <div class="feature-buttons">
-      <button onclick="sendQuick('Train from Chennai to Madurai')">Train Schedules<br><small>Get real-time timings</small></button>
       <button onclick="sendQuick('Book ticket from Coimbatore to Chennai on 21 April for Sleeper - passenger John')">Ticket Booking<br><small>Booking assistance</small></button>
       <button onclick="sendQuick('Platform Info')">Platform Info<br><small>Live updates</small></button>
       <button onclick="sendQuick('Help')">General Help<br><small>Railway services</small></button>
-      <button onclick="alert('📞 Tamil Nadu Railways Customer Care: 139')">Customer Care<br><small>Call 139</small></button>
+      <button onclick="sendQuick('Customer Care')">Customer Care<br><small>Call 139</small></button>
     </div>
 
     <div class="chat-box" id="chatBox"></div>
 
     <div class="chat-input">
-      <img src="/d6ab19ee-907b-46e0-bb85-2192f5014690.png" alt="chatbot-train" class="chatbot-train">
+      <img src="/5a5de095-56fa-4139-a1e9-01e44b9c2763.png" alt="chatbot-train" />
       <input type="text" id="userInput" placeholder="Type your question here..." autofocus />
       <button onclick="sendMessage()">Send</button>
     </div>
