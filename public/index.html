@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -190,6 +190,11 @@
 
       const data = await response.json();
       addChat("bot", data.reply || "Sorry, something went wrong.");
+
+      // Redirect to payment page if redirect URL is given
+      if (data.redirect) {
+        window.location.href = data.redirect;
+      }
     }
 
     function sendQuick(message) {
