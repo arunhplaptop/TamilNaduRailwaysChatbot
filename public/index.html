@@ -34,6 +34,7 @@
       display: flex;
       padding: 10px;
       border-top: 1px solid #ccc;
+      align-items: center;
     }
     input[type="text"] {
       flex: 1;
@@ -64,18 +65,14 @@
     }
     .chatbot-train {
       position: absolute;
-      bottom: -30px;
+      bottom: 60px;
       left: 20px;
-      height: 60px;
+      height: 50px;
       animation: bounce 2s infinite;
     }
     @keyframes bounce {
-      0%, 100% {
-        transform: translateY(0px);
-      }
-      50% {
-        transform: translateY(-8px);
-      }
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
     }
     .loading {
       display: inline-block;
@@ -93,77 +90,76 @@
 </head>
 <body>
 
-  <div class="chat-container">
-    <img src="/76319113-1cd3-4746-9c2a-5279872b789f.png" alt="chatbot-train" class="chatbot-train" id="trainBot">
+<div class="chat-container">
+  <img src="/d6ab19ee-907b-46e0-bb85-2192f5014690.png" alt="chatbot-train" class="chatbot-train" id="trainBot">
 
-    <div class="chat-box" id="chatBox"></div>
-
-    <div class="feature-buttons">
-      <button onclick="sendQuick('Book ticket from Chennai to Madurai on 21 April for Sleeper - passenger John')">Book Ticket</button>
-      <button onclick="sendQuick('Platform Info')">Platform Info</button>
-      <button onclick="sendQuick('Help')">Railway Help</button>
-      <button onclick="alert('📞 Tamil Nadu Railways Customer Care: 139')">Customer Care</button>
-    </div>
-
-    <div class="input-box">
-      <input type="text" id="userInput" placeholder="Type your message here..." onkeydown="if(event.key==='Enter')sendMessage()">
-      <button onclick="sendMessage()">Send</button>
-    </div>
+  <div class="chat-box" id="chatBox">
+    <div><strong>🚆 Chatbot:</strong> Welcome to Tamil Nadu Railways! How can I help you today?</div>
   </div>
 
-  <script>
-    const chatBox = document.getElementById('chatBox');
-    const userInput = document.getElementById('userInput');
+  <div class="feature-buttons">
+    <button onclick="sendQuick('Book ticket from Chennai to Madurai on 21 April for Sleeper - passenger John')">Book Ticket</button>
+    <button onclick="sendQuick('Platform Info')">Platform Info</button>
+    <button onclick="sendQuick('Help')">Railway Help</button>
+    <button onclick="alert('📞 Tamil Nadu Railways Customer Care: 139')">Customer Care</button>
+  </div>
 
-    function appendMessage(sender, message) {
-      const msgDiv = document.createElement('div');
-      msgDiv.style.margin = '10px 0';
-      msgDiv.innerHTML = `<strong>${sender}:</strong> ${message}`;
-      chatBox.appendChild(msgDiv);
-      chatBox.scrollTop = chatBox.scrollHeight;
+  <div class="input-box">
+    <input type="text" id="userInput" placeholder="Type your message here..." onkeydown="if(event.key==='Enter')sendMessage()">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+  const chatBox = document.getElementById('chatBox');
+  const userInput = document.getElementById('userInput');
+
+  function appendMessage(sender, message) {
+    const msgDiv = document.createElement('div');
+    msgDiv.style.margin = '10px 0';
+    msgDiv.innerHTML = `<strong>${sender}:</strong> ${message}`;
+    chatBox.appendChild(msgDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  function sendQuick(message) {
+    userInput.value = message;
+    sendMessage();
+  }
+
+  async function sendMessage() {
+    const message = userInput.value.trim();
+    if (!message) return;
+    appendMessage("You", message);
+    userInput.value = '';
+    userInput.focus();
+
+    const loadingDiv = document.createElement('div');
+    loadingDiv.className = 'loading';
+    chatBox.appendChild(loadingDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    const response = await fetch('/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message })
+    });
+    const data = await response.json();
+
+    chatBox.removeChild(loadingDiv);
+    appendMessage("🚆 Chatbot", data.reply);
+
+    if (data.redirect) {
+      setTimeout(() => {
+        window.location.href = data.redirect;
+      }, 2000);
     }
+  }
 
-    function sendQuick(message) {
-      userInput.value = message;
-      sendMessage();
-    }
-
-    async function sendMessage() {
-      const message = userInput.value.trim();
-      if (!message) return;
-      appendMessage("You", message);
-      userInput.value = '';
-      userInput.focus();
-
-      // Show loading animation
-      const loadingDiv = document.createElement('div');
-      loadingDiv.className = 'loading';
-      chatBox.appendChild(loadingDiv);
-      chatBox.scrollTop = chatBox.scrollHeight;
-
-      const response = await fetch('/ask', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message })
-      });
-      const data = await response.json();
-
-      chatBox.removeChild(loadingDiv);
-
-      appendMessage("🚆 Chatbot", data.reply);
-
-      if (data.redirect) {
-        setTimeout(() => {
-          window.location.href = data.redirect;
-        }, 2000);
-      }
-    }
-
-    // Auto-focus input field on load
-    window.onload = () => {
-      userInput.focus();
-    };
-  </script>
+  window.onload = () => {
+    userInput.focus();
+  };
+</script>
 
 </body>
 </html>
