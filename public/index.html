@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tamil Nadu Railways Chatbot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Montserrat', sans-serif;
       background: #f4f8f7;
     }
 
     .navbar {
       background: linear-gradient(to right, #FF9933, #ffffff, #138808);
-      padding: 10px 20px;
+      padding: 12px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
     }
 
     .navbar img {
@@ -25,58 +26,48 @@
     }
 
     .navbar-title {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: bold;
       color: #000080;
-      margin-left: 10px;
-    }
-
-    .nav-right {
-      display: flex;
-      gap: 15px;
-    }
-
-    .nav-right a {
-      color: #000;
-      text-decoration: none;
-      font-weight: 600;
+      margin-left: 12px;
     }
 
     .container {
       max-width: 600px;
-      margin: 40px auto;
+      margin: 50px auto;
       background: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      padding: 35px;
+      border-radius: 16px;
+      box-shadow: 0 5px 14px rgba(0,0,0,0.1);
       text-align: center;
     }
 
     .container h2 {
       color: #003366;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      font-size: 26px;
     }
 
     .container p {
-      color: #444;
-      font-size: 15px;
-      margin-bottom: 20px;
+      color: #555;
+      font-size: 16px;
+      margin-bottom: 30px;
     }
 
     .feature-buttons {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 15px;
+      gap: 20px;
       margin-bottom: 30px;
     }
 
     .feature-buttons button {
-      padding: 12px;
-      font-size: 14px;
+      padding: 15px;
+      font-size: 15px;
       font-weight: bold;
       background-color: #e6f0ff;
       border: 1px solid #cce0ff;
-      border-radius: 8px;
+      border-radius: 10px;
       color: #003399;
       cursor: pointer;
       transition: 0.3s ease;
@@ -89,18 +80,19 @@
     .chat-box {
       text-align: left;
       background: #fefefe;
-      padding: 10px;
-      border-radius: 10px;
-      max-height: 200px;
+      padding: 14px;
+      border-radius: 12px;
+      max-height: 260px;
       overflow-y: auto;
       margin-bottom: 15px;
       border: 1px solid #ccc;
+      position: relative;
     }
 
     .chat-message {
-      margin: 10px 0;
-      padding: 10px;
-      border-radius: 8px;
+      margin: 12px 0;
+      padding: 12px;
+      border-radius: 10px;
     }
 
     .user {
@@ -114,104 +106,118 @@
 
     .chat-input {
       display: flex;
-      margin-top: 10px;
+      margin-top: 15px;
     }
 
     .chat-input input {
       flex: 1;
-      padding: 12px;
-      border-radius: 6px 0 0 6px;
+      padding: 14px;
+      border-radius: 8px 0 0 8px;
       border: 1px solid #ccc;
       outline: none;
+      font-size: 15px;
     }
 
     .chat-input button {
       background-color: #407BFF;
       color: #fff;
-      padding: 12px 20px;
+      padding: 14px 24px;
       border: none;
-      border-radius: 0 6px 6px 0;
+      border-radius: 0 8px 8px 0;
       cursor: pointer;
+      font-size: 16px;
     }
 
     .chat-input button:hover {
       background-color: #2e65d3;
     }
+
+    .chatbot-train {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      width: 60px;
+      animation: bounce 1.5s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .loading {
+      font-style: italic;
+      font-size: 14px;
+      color: #555;
+      margin: 10px 0;
+    }
+
   </style>
 </head>
 <body>
   <div class="navbar">
     <div style="display: flex; align-items: center;">
-      <img src="/logo.png" alt="Tamil Nadu Railways Logo" />
-      <span class="navbar-title">Tamil Nadu Railways Chatbot</span>
-    </div>
-    <div class="nav-right">
-      <a href="#">Home</a>
-      <a href="#">About</a>
-      <a href="#">Contact</a>
+      <img src="/logo.png" alt="Tamil Nadu Railways Logo"/>
+      <span class="navbar-title">Tamil Nadu Railways</span>
     </div>
   </div>
 
   <div class="container">
-    <h2>Welcome to Tamil Nadu Railways Assistant</h2>
-    <p>I'm here to help you with all your railway inquiries.</p>
+    <h2>Your Railway Assistant</h2>
+    <p>Book tickets, check routes, or get platform info instantly.</p>
 
     <div class="feature-buttons">
-      <button onclick="sendQuick('Train from Chennai to Madurai')">Train Schedules<br><small>Get real-time timings</small></button>
-      <button onclick="sendQuick('Book ticket from Coimbatore to Chennai on 21 April for Sleeper - passenger John')">Ticket Booking<br><small>Booking assistance</small></button>
-      <button onclick="sendQuick('Platform Info')">Platform Info<br><small>Live updates</small></button>
-      <button onclick="sendQuick('Help')">General Help<br><small>Railway services</small></button>
+      <button onclick="sendQuick('Book ticket from Chennai to Madurai on 21 April for Sleeper - passenger John')">Book Ticket</button>
+      <button onclick="sendQuick('Platform Info')">Platform Info</button>
+      <button onclick="sendQuick('Help')">Railway Help</button>
+      <button onclick="sendQuick('Hi')">Say Hi!</button>
     </div>
 
-    <div class="chat-box" id="chatBox"></div>
+    <div class="chat-box" id="chatBox">
+      <img src="/train-icon.png" alt="chatbot-train" class="chatbot-train" id="trainBot">
+    </div>
 
     <div class="chat-input">
-      <input type="text" id="userInput" placeholder="Type your question here..." autofocus />
+      <input type="text" id="userInput" placeholder="Type your message..."/>
       <button onclick="sendMessage()">Send</button>
     </div>
   </div>
 
   <script>
+    const chatBox = document.getElementById("chatBox");
+    const inputField = document.getElementById("userInput");
+
     async function sendMessage() {
-      const input = document.getElementById("userInput");
-      const message = input.value.trim();
+      const message = inputField.value.trim();
       if (!message) return;
 
       addChat("user", message);
-      input.value = "";
-      input.focus();
+      inputField.value = "";
+      inputField.focus();
 
-      addChat("bot", "⏳ Typing...");
+      addLoading();
 
       const response = await fetch("/ask", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message })
       });
 
       const data = await response.json();
+      removeLoading();
 
-      removeLastBotMessage();
-
-      addChat("bot", data.reply || "Sorry, something went wrong.");
-
+      addChat("bot", data.reply);
       if (data.redirect) {
         window.location.href = data.redirect;
       }
-
-      input.focus();
     }
 
     function sendQuick(message) {
-      const input = document.getElementById("userInput");
-      input.value = message;
+      inputField.value = message;
       sendMessage();
     }
 
     function addChat(sender, text) {
-      const chatBox = document.getElementById("chatBox");
       const div = document.createElement("div");
       div.className = `chat-message ${sender}`;
       div.textContent = text;
@@ -219,13 +225,21 @@
       chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    function removeLastBotMessage() {
-      const chatBox = document.getElementById("chatBox");
-      const messages = chatBox.getElementsByClassName("chat-message bot");
-      if (messages.length > 0) {
-        chatBox.removeChild(messages[messages.length - 1]);
-      }
+    function addLoading() {
+      const loading = document.createElement("div");
+      loading.className = "loading";
+      loading.id = "loadingMessage";
+      loading.textContent = "🚂 Fetching details...";
+      chatBox.appendChild(loading);
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
+
+    function removeLoading() {
+      const loading = document.getElementById("loadingMessage");
+      if (loading) loading.remove();
+    }
+
+    inputField.focus();
   </script>
 </body>
 </html>
