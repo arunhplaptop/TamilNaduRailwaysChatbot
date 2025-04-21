@@ -138,15 +138,14 @@
       background-color: #2e65d3;
     }
 
-    /* Train animation section */
     .stage {
       position: relative;
       margin: 50px auto;
       overflow: hidden;
       background: #cceeff;
-      height: 200px;
+      height: 250px;
       border-radius: 10px;
-      max-width: 800px;
+      max-width: 900px;
     }
 
     .sky {
@@ -178,70 +177,30 @@
       100% { left: 100%; }
     }
 
-    .train {
-      position: absolute;
-      bottom: 20px;
-      display: flex;
+    .center {
+      position: relative;
       animation: trainmove 8s linear infinite;
     }
 
     @keyframes trainmove {
-      0% { left: -800px; }
+      0% { left: -1000px; }
       100% { left: 100%; }
     }
 
-    .wagon, .locomotive {
-      width: 80px;
-      height: 60px;
-      background: #555;
-      margin-right: 5px;
-      border-radius: 5px;
-      position: relative;
-    }
-
-    .wagon::before, .locomotive::before, .wagon::after, .locomotive::after {
-      content: '';
-      position: absolute;
-      bottom: -12px;
-      width: 16px;
-      height: 16px;
-      background: #333;
-      border-radius: 50%;
-    }
-
-    .wagon::before { left: 10px; }
-    .wagon::after { right: 10px; }
-    .locomotive::before { left: 10px; }
-    .locomotive::after { right: 10px; }
-
-    .cabin {
-      width: 30px;
-      height: 30px;
-      background: #ff9933;
-      position: absolute;
-      top: 0;
-      left: 5px;
-      border-radius: 3px;
-    }
-
-    .motor {
-      width: 50px;
-      height: 30px;
-      background: #138808;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      border-radius: 3px;
-    }
-
-    .chimney {
-      width: 10px;
-      height: 20px;
-      background: #444;
-      position: absolute;
-      top: -20px;
-      left: 20px;
-      border-radius: 2px;
+    /* Placeholder styles for new train - you can expand these */
+    .mountains,
+    .bridge,
+    .frame,
+    .train,
+    .engine-front,
+    .chimney,
+    .engine-body,
+    .compartment,
+    .compartment-window,
+    .wheel-holder,
+    .wheel,
+    .wheel-joint {
+      /* Add detailed styles as needed */
     }
 
     .smoke {
@@ -255,6 +214,10 @@
       animation: smokemove 2s ease-in-out infinite;
     }
 
+    .smoke-2 { animation-delay: 0.5s; }
+    .smoke-3 { animation-delay: 1s; }
+    .smoke-4 { animation-delay: 1.5s; }
+
     @keyframes smokemove {
       0% {
         transform: translateY(0) scale(0.5);
@@ -264,17 +227,6 @@
         transform: translateY(-50px) scale(1.5);
         opacity: 0;
       }
-    }
-
-    .light {
-      width: 8px;
-      height: 8px;
-      background: yellow;
-      position: absolute;
-      top: 15px;
-      left: -10px;
-      border-radius: 50%;
-      box-shadow: 0 0 10px yellow;
     }
   </style>
 </head>
@@ -311,24 +263,56 @@
     </div>
   </div>
 
-  <!-- 🚂 Animated Train Section -->
+  <!-- 🚂 Updated Train Section -->
   <section class="stage">
     <div class="sky">
       <div class="cloud"></div>
       <div class="cloud"></div>
     </div>
-    <div class="train">
-      <div class="wagon"></div>
-      <div class="wagon"></div>
-      <div class="wagon"></div>
-      <div class="locomotive">
-        <div class="cabin"></div>
-        <div class="motor"></div>
-        <div class="chimney">
-          <div class="smoke"></div>
+    <div class="center">
+      <div class="mountains"></div>
+      <div class="frame">
+        <div class="train">
+          <div class="engine-front">
+            <div class="chimney">
+              <div class="smoke"></div>
+              <div class="smoke smoke-2"></div>
+              <div class="smoke smoke-3"></div>
+              <div class="smoke smoke-4"></div>
+            </div>
+          </div>
+
+          <div class="engine-body"></div>
+
+          <div class="compartment">
+            <div class="compartment-window"></div>
+          </div>
+
+          <div class="compartment compartment-two">
+            <div class="compartment-window"></div>
+          </div>
+
+          <div class="compartment compartment-three">
+            <div class="compartment-window"></div>
+          </div>
+
+          <div class="wheel-holder">
+            <div class="wheel"></div>
+            <div class="wheel wheel-2">
+              <div class="wheel-joint"></div>
+              <div class="wheel-joint wheel-joint-2"></div>
+            </div>
+            <div class="wheel wheel-3"></div>
+            <div class="wheel wheel-4"></div>
+            <div class="wheel wheel-5"></div>
+            <div class="wheel wheel-6"></div>
+            <div class="wheel wheel-7"></div>
+            <div class="wheel wheel-8"></div>
+            <div class="wheel wheel-9"></div>
+          </div>
         </div>
-        <div class="light"></div>
       </div>
+      <div class="bridge"></div>
     </div>
   </section>
 
