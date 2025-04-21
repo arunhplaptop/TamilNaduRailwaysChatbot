@@ -61,6 +61,8 @@
   <div class="container">
     <h2>Ticket Payment</h2>
     <form id="paymentForm">
+      <input type="text" id="routeInfo" readonly placeholder="Route">
+      <input type="text" id="travelDate" readonly placeholder="Travel Date">
       <input type="text" id="trainName" readonly>
       <input type="text" placeholder="Passenger Name" required>
       <select required>
@@ -92,6 +94,8 @@
     const params = new URLSearchParams(window.location.search);
     const trainName = params.get("train");
     document.getElementById("trainName").value = trainName || "";
+    document.getElementById("routeInfo").value = params.get("route") || "";
+    document.getElementById("travelDate").value = params.get("date") || "";
 
     document.getElementById("paymentForm").addEventListener("submit", function(e) {
       e.preventDefault();
