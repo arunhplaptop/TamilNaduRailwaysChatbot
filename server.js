@@ -99,9 +99,7 @@ app.post('/ask', async (req, res) => {
   res.json({ reply, redirect: paymentURL });
   return;
 }
-    userState.awaitingDate = false;
-    reply = `🎟️ Ticket booked for ${userState.pendingRoute} on ${message}. Safe travels!`;
-    userState.pendingRoute = '';
+    
   } else if (message.includes("book") || message.includes("ticket")) {
     userState.awaitingRoute = true;
     reply = "🎟️ I'd be happy to help you book a ticket. Please provide your route (e.g. Chennai to Madurai).";
