@@ -1,74 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tamil Nadu Railways Chatbot</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      background: linear-gradient(#e0f7fa, #ffffff);
       margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f8f7;
     }
-    .chat-container {
-      background: white;
-      width: 450px;
-      margin-top: 50px;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+
+    .navbar {
+      background: linear-gradient(to right, #FF9933, #ffffff, #138808);
+      padding: 10px 20px;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
+
+    .navbar img {
+      height: 50px;
+    }
+
+    .navbar-title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #000080;
+      margin-left: 10px;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-right a {
+      color: #000;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .container h2 {
+      color: #003366;
+      margin-bottom: 10px;
+    }
+
+    .container p {
+      color: #444;
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+
+    .feature-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .feature-buttons button {
+      padding: 12px;
+      font-size: 14px;
+      font-weight: bold;
+      background-color: #e6f0ff;
+      border: 1px solid #cce0ff;
+      border-radius: 8px;
+      color: #003399;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .feature-buttons button:hover {
+      background-color: #cce0ff;
+    }
+
     .chat-box {
-      padding: 20px;
-      height: 400px;
-      overflow-y: auto;
-    }
-    .input-box {
-      display: flex;
+      text-align: left;
+      background: #fefefe;
       padding: 10px;
-      border-top: 1px solid #ccc;
+      border-radius: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+    }
+
+    .chat-message {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .user {
+      background-color: #d1ecf1;
+      text-align: right;
+    }
+
+    .bot {
+      background-color: #f8d7da;
+    }
+
+    .chat-input {
+      display: flex;
+      margin-top: 10px;
       align-items: center;
     }
-    input[type="text"] {
+
+    .chat-input input {
       flex: 1;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      margin-right: 10px;
-      font-size: 14px;
+      padding: 12px;
+      border-radius: 6px 0 0 6px;
+      border: 1px solid #ccc;
+      outline: none;
     }
-    button {
-      background: #007bff;
-      color: white;
+
+    .chat-input button {
+      background-color: #407BFF;
+      color: #fff;
+      padding: 12px 20px;
       border: none;
-      padding: 10px 15px;
-      border-radius: 8px;
+      border-radius: 0 6px 6px 0;
       cursor: pointer;
     }
-    .feature-buttons {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px;
-      background: #f1f1f1;
+
+    .chat-input button:hover {
+      background-color: #2e65d3;
     }
-    .feature-buttons button {
-      flex: 1;
-      font-size: 13px;
-      padding: 8px;
-      margin: 0 5px;
-      background: #007bff;
-      color: white;
-      border-radius: 5px;
-    }
+
     .chatbot-train {
-      height: 40px;
-      vertical-align: middle;
+      height: 35px;
+      margin-right: 10px;
       animation: move 1.5s infinite alternate;
     }
+
     @keyframes move {
       0% { transform: translateX(0px); }
       100% { transform: translateX(8px); }
@@ -76,76 +152,94 @@
   </style>
 </head>
 <body>
-
-<div class="chat-container">
-  <div class="chat-box" id="chatBox">
-    <div><strong>🚆 Chatbot:</strong> Welcome to Tamil Nadu Railways! How can I help you today?</div>
+  <div class="navbar">
+    <div style="display: flex; align-items: center;">
+      <img src="/logo.png" alt="Tamil Nadu Railways Logo" />
+      <span class="navbar-title">Tamil Nadu Railways Chatbot</span>
+    </div>
+    <div class="nav-right">
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </div>
   </div>
 
-  <div class="feature-buttons">
-    <button onclick="sendQuick('Book Ticket')">Book Ticket</button>
-    <button onclick="sendQuick('Platform Info')">Platform Info</button>
-    <button onclick="sendQuick('Help')">Railway Help</button>
-    <button onclick="alert('📞 Tamil Nadu Railways Customer Care: 139')">Customer Care</button>
+  <div class="container">
+    <h2>Welcome to Tamil Nadu Railways Assistant</h2>
+    <p>I'm here to help you with all your railway inquiries.</p>
+
+    <div class="feature-buttons">
+      <button onclick="sendQuick('Train from Chennai to Madurai')">Train Schedules<br><small>Get real-time timings</small></button>
+      <button onclick="sendQuick('Book ticket from Coimbatore to Chennai on 21 April for Sleeper - passenger John')">Ticket Booking<br><small>Booking assistance</small></button>
+      <button onclick="sendQuick('Platform Info')">Platform Info<br><small>Live updates</small></button>
+      <button onclick="sendQuick('Help')">General Help<br><small>Railway services</small></button>
+      <button onclick="alert('📞 Tamil Nadu Railways Customer Care: 139')">Customer Care<br><small>Call 139</small></button>
+    </div>
+
+    <div class="chat-box" id="chatBox"></div>
+
+    <div class="chat-input">
+      <img src="/d6ab19ee-907b-46e0-bb85-2192f5014690.png" alt="chatbot-train" class="chatbot-train">
+      <input type="text" id="userInput" placeholder="Type your question here..." autofocus />
+      <button onclick="sendMessage()">Send</button>
+    </div>
   </div>
 
-  <div class="input-box">
-    <img src="/d6ab19ee-907b-46e0-bb85-2192f5014690.png" alt="chatbot-train" class="chatbot-train">
-    <input type="text" id="userInput" placeholder="Type your message here..." onkeydown="if(event.key==='Enter')sendMessage()">
-    <button onclick="sendMessage()">Send</button>
-  </div>
-</div>
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const message = input.value.trim();
+      if (!message) return;
 
-<script>
-  const chatBox = document.getElementById('chatBox');
-  const userInput = document.getElementById('userInput');
+      addChat("user", message);
+      input.value = "";
+      input.focus();
 
-  function appendMessage(sender, message) {
-    const msgDiv = document.createElement('div');
-    msgDiv.style.margin = '10px 0';
-    msgDiv.innerHTML = `<strong>${sender}:</strong> ${message}`;
-    chatBox.appendChild(msgDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
+      addChat("bot", "⏳ Typing...");
 
-  function sendQuick(message) {
-    userInput.value = message;
-    sendMessage();
-  }
+      const response = await fetch("/ask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message }),
+      });
 
-  async function sendMessage() {
-    const message = userInput.value.trim();
-    if (!message) return;
-    appendMessage("You", message);
-    userInput.value = '';
-    userInput.focus();
+      const data = await response.json();
 
-    const loading = document.createElement('div');
-    loading.innerHTML = `<span style="color:#007bff;">Typing...</span>`;
-    chatBox.appendChild(loading);
-    chatBox.scrollTop = chatBox.scrollHeight;
+      removeLastBotMessage();
 
-    const response = await fetch('/ask', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message })
-    });
-    const data = await response.json();
+      addChat("bot", data.reply || "Sorry, something went wrong.");
 
-    chatBox.removeChild(loading);
-    appendMessage("🚆 Chatbot", data.reply);
-
-    if (data.redirect) {
-      setTimeout(() => {
+      if (data.redirect) {
         window.location.href = data.redirect;
-      }, 1500);
+      }
+
+      input.focus();
     }
-  }
 
-  window.onload = () => {
-    userInput.focus();
-  };
-</script>
+    function sendQuick(message) {
+      const input = document.getElementById("userInput");
+      input.value = message;
+      sendMessage();
+    }
 
+    function addChat(sender, text) {
+      const chatBox = document.getElementById("chatBox");
+      const div = document.createElement("div");
+      div.className = `chat-message ${sender}`;
+      div.textContent = text;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function removeLastBotMessage() {
+      const chatBox = document.getElementById("chatBox");
+      const messages = chatBox.getElementsByClassName("chat-message bot");
+      if (messages.length > 0) {
+        chatBox.removeChild(messages[messages.length - 1]);
+      }
+    }
+  </script>
 </body>
 </html>
