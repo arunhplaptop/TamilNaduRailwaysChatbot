@@ -6,24 +6,21 @@
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background: #f3f4f6;
+      background: linear-gradient(#e0f7fa, #ffffff);
       margin: 0;
       padding: 0;
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      justify-content: center;
     }
     .chat-container {
-      margin-top: 40px;
       background: white;
-      width: 90%;
-      max-width: 500px;
+      width: 450px;
+      margin-top: 50px;
       border-radius: 15px;
       overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
       display: flex;
       flex-direction: column;
-      position: relative;
     }
     .chat-box {
       padding: 20px;
@@ -39,8 +36,8 @@
     input[type="text"] {
       flex: 1;
       padding: 10px;
-      border: none;
-      border-radius: 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
       margin-right: 10px;
       font-size: 14px;
     }
@@ -49,62 +46,51 @@
       color: white;
       border: none;
       padding: 10px 15px;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
     }
     .feature-buttons {
       display: flex;
       justify-content: space-between;
       padding: 10px;
-      gap: 8px;
+      background: #f1f1f1;
     }
     .feature-buttons button {
       flex: 1;
-      font-size: 12px;
+      font-size: 13px;
       padding: 8px;
+      margin: 0 5px;
+      background: #007bff;
+      color: white;
+      border-radius: 5px;
     }
     .chatbot-train {
-      position: absolute;
-      bottom: 60px;
-      left: 20px;
-      height: 50px;
-      animation: bounce 2s infinite;
+      height: 40px;
+      vertical-align: middle;
+      animation: move 1.5s infinite alternate;
     }
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-8px); }
-    }
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid #ccc;
-      border-top-color: #007bff;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    @keyframes move {
+      0% { transform: translateX(0px); }
+      100% { transform: translateX(8px); }
     }
   </style>
 </head>
 <body>
 
 <div class="chat-container">
-  <img src="/d6ab19ee-907b-46e0-bb85-2192f5014690.png" alt="chatbot-train" class="chatbot-train" id="trainBot">
-
   <div class="chat-box" id="chatBox">
     <div><strong>🚆 Chatbot:</strong> Welcome to Tamil Nadu Railways! How can I help you today?</div>
   </div>
 
   <div class="feature-buttons">
-    <button onclick="sendQuick('Book ticket from Chennai to Madurai on 21 April for Sleeper - passenger John')">Book Ticket</button>
+    <button onclick="sendQuick('Book Ticket')">Book Ticket</button>
     <button onclick="sendQuick('Platform Info')">Platform Info</button>
     <button onclick="sendQuick('Help')">Railway Help</button>
     <button onclick="alert('📞 Tamil Nadu Railways Customer Care: 139')">Customer Care</button>
   </div>
 
   <div class="input-box">
+    <img src="/d6ab19ee-907b-46e0-bb85-2192f5014690.png" alt="chatbot-train" class="chatbot-train">
     <input type="text" id="userInput" placeholder="Type your message here..." onkeydown="if(event.key==='Enter')sendMessage()">
     <button onclick="sendMessage()">Send</button>
   </div>
@@ -134,9 +120,9 @@
     userInput.value = '';
     userInput.focus();
 
-    const loadingDiv = document.createElement('div');
-    loadingDiv.className = 'loading';
-    chatBox.appendChild(loadingDiv);
+    const loading = document.createElement('div');
+    loading.innerHTML = `<span style="color:#007bff;">Typing...</span>`;
+    chatBox.appendChild(loading);
     chatBox.scrollTop = chatBox.scrollHeight;
 
     const response = await fetch('/ask', {
@@ -146,13 +132,13 @@
     });
     const data = await response.json();
 
-    chatBox.removeChild(loadingDiv);
+    chatBox.removeChild(loading);
     appendMessage("🚆 Chatbot", data.reply);
 
     if (data.redirect) {
       setTimeout(() => {
         window.location.href = data.redirect;
-      }, 2000);
+      }, 1500);
     }
   }
 
