@@ -64,7 +64,7 @@ app.post('/ask', async (req, res) => {
     message.includes("yes") || message.includes("payment") ||
     trainChoices.some(t => t.toLowerCase().includes(message))
   )) {
-    const selectedTrain = 
+    const selectedTrain =
       message === '1' ? trainChoices[0] :
       message === '2' ? trainChoices[1] :
       trainChoices.find(t => t.toLowerCase().includes(message)) || trainChoices[0];
@@ -72,6 +72,7 @@ app.post('/ask', async (req, res) => {
     reply = `✅ You selected: ${selectedTrain}. Redirecting to payment page...`;
     res.json({ reply, redirect: "/payment.html?train=" + encodeURIComponent(selectedTrain) });
     return;
+
   } else if (userState.awaitingRoute) {
     const match = message.match(/(?:train\s+from\s+)?([a-z\s]+)\s*to\s*([a-z\s]+)/i);
     if (match) {
@@ -88,23 +89,24 @@ app.post('/ask', async (req, res) => {
       reply = "⚠️ Please provide the route in the format: source to destination.";
     }
   } else if (userState.awaitingDate) {
-  const travelDate = message;
-  const selectedRoute = userState.pendingRoute;
-  userState.awaitingDate = false;
-  userState.pendingRoute = '';
+    const travelDate = message;
+    const selectedRoute = userState.pendingRoute;
+    userState.awaitingDate = false;
+    userState.pendingRoute = '';
 
-  const paymentURL = `/payment.html?route=${encodeURIComponent(selectedRoute)}&date=${encodeURIComponent(travelDate)}`;
-  reply = `✅ Route confirmed: ${selectedRoute} on ${travelDate}. Redirecting to payment page...`;
+    const paymentURL = `/payment.html?route=${encodeURIComponent(selectedRoute)}&date=${encodeURIComponent(travelDate)}`;
+    reply = `✅ Route confirmed: ${selectedRoute} on ${travelDate}. Redirecting to payment page...`;
 
-  res.json({ reply, redirect: paymentURL });
-  return;
-}
-    
+    res.json({ reply, redirect: paymentURL });
+    return;
+
   } else if (message.includes("book") || message.includes("ticket")) {
     userState.awaitingRoute = true;
     reply = "🎟️ I'd be happy to help you book a ticket. Please provide your route (e.g. Chennai to Madurai).";
+
   } else if (message.includes("hi") || message.includes("hello") || message.includes("hey")) {
     reply = "👋 Hello! How can I assist you today? You can ask me to book tickets or check train schedules!";
+
   } else if (message.match(/([a-z\s]+)\s*to\s*([a-z\s]+)/i)) {
     const routeMatch = message.match(/([a-z\s]+)\s*to\s*([a-z\s]+)/i);
     const routeKey = `${routeMatch[1].trim()} to ${routeMatch[2].trim()}`.toLowerCase();
@@ -114,6 +116,7 @@ app.post('/ask', async (req, res) => {
     } else {
       reply = `❌ Sorry, no train found for \"${routeKey}\".`;
     }
+
   } else if (message.includes("schedule") || message.includes("timing")) {
     reply = "📅 Available Train Schedules:\n";
     let count = 1;
@@ -121,10 +124,13 @@ app.post('/ask', async (req, res) => {
       reply += `${count}. ${route} → ${routes[route]}\n`;
       if (++count > 5) break;
     }
+
   } else if (message.includes("platform")) {
     reply = "🛤️ Platform info available closer to departure.";
+
   } else if (message.includes("help") || message.includes("services")) {
     reply = "🤖 I can help with:\n- 🚆 Train Schedules\n- 🎟️ Ticket Booking\n- 🛤️ Platform Info\n- ℹ️ Railway Help\nSay 'book ticket' or 'Chennai to Madurai'.";
+
   } else {
     const aiResponse = await askAI(message);
     reply = aiResponse;
