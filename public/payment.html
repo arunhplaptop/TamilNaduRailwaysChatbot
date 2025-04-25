@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Ticket Payment - Tamil Nadu Railways</title>
   <style>
     body {
@@ -9,6 +9,7 @@
       font-family: 'Segoe UI', sans-serif;
       background: #f4f8f7;
     }
+
     .navbar {
       background: linear-gradient(to right, #FF9933, #ffffff, #138808);
       padding: 10px 20px;
@@ -16,24 +17,32 @@
       align-items: center;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
+
     .navbar img {
       height: 50px;
     }
+
     .navbar-title {
       font-size: 22px;
       font-weight: bold;
       color: #000080;
       margin-left: 10px;
     }
+
     .container {
-      max-width: 600px;
+      max-width: 550px;
       margin: 40px auto;
-      background: #fff;
+      background: #ffffff;
       padding: 30px;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
       text-align: center;
     }
+
+    h2 {
+      color: #003366;
+    }
+
     input, select, button {
       width: 100%;
       padding: 12px;
@@ -41,20 +50,81 @@
       border-radius: 6px;
       border: 1px solid #ccc;
     }
+
     button {
       background-color: #407BFF;
-      color: #fff;
+      color: white;
       border: none;
       cursor: pointer;
     }
+
     button:hover {
       background-color: #2e65d3;
+    }
+
+    /* Mini train animation */
+    .train-track {
+      margin-top: 40px;
+      height: 80px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .train {
+      display: flex;
+      position: absolute;
+      left: -100%;
+      animation: moveTrain 15s linear infinite;
+    }
+
+    .wagon, .locomotive {
+      width: 80px;
+      height: 50px;
+      background-color: #ccc;
+      border: 2px solid #555;
+      border-radius: 5px;
+      margin: 0 5px;
+    }
+
+    .locomotive {
+      background-color: #888;
+      position: relative;
+    }
+
+    .chimney {
+      width: 10px;
+      height: 15px;
+      background: #444;
+      position: absolute;
+      top: -15px;
+      left: 10px;
+    }
+
+    .smoke {
+      width: 10px;
+      height: 10px;
+      background: lightgray;
+      border-radius: 50%;
+      position: absolute;
+      top: -10px;
+      left: 0;
+      animation: smoke 1s ease-in-out infinite;
+    }
+
+    @keyframes moveTrain {
+      0% { left: -100%; }
+      100% { left: 110%; }
+    }
+
+    @keyframes smoke {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-20px) scale(1.5); opacity: 0; }
     }
   </style>
 </head>
 <body>
   <div class="navbar">
-    <img src="/logo.png" alt="Tamil Nadu Railways Logo">
+    <img src="/logo.png" alt="Tamil Nadu Railways Logo" />
     <span class="navbar-title">Tamil Nadu Railways</span>
   </div>
 
@@ -62,55 +132,58 @@
     <h2>Ticket Payment</h2>
     <form id="paymentForm">
       <input type="text" id="routeInfo" readonly placeholder="Route">
-      <input type="text" id="travelDate" readonly placeholder="Travel Date">
-      <input type="text" id="trainName" readonly>
+      <input type="text" id="trainInfo" readonly placeholder="Train">
       <input type="text" id="name" placeholder="Passenger Name" required>
       <select id="gender" required>
         <option value="">Select Gender</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
       </select>
       <input type="number" id="age" placeholder="Age" required>
       <input type="date" id="dob" required>
       <select required>
         <option value="">Select Class</option>
-        <option value="sleeper">Sleeper</option>
-        <option value="ac">AC</option>
-        <option value="chaircar">Chair Car</option>
+        <option>Sleeper</option>
+        <option>AC</option>
+        <option>Chair Car</option>
       </select>
       <input type="number" placeholder="Amount (₹)" required>
       <select required>
         <option value="">Select Payment Mode</option>
-        <option value="upi">UPI</option>
-        <option value="card">Credit/Debit Card</option>
-        <option value="netbanking">Net Banking</option>
-        <option value="wallet">Wallet</option>
-        <option value="emi">EMI</option>
+        <option>UPI</option>
+        <option>Credit/Debit Card</option>
+        <option>Net Banking</option>
+        <option>Wallet</option>
+        <option>QR Scan</option>
       </select>
       <button type="submit">Pay Now</button>
     </form>
+
+    <div class="train-track">
+      <div class="train">
+        <div class="locomotive">
+          <div class="chimney">
+            <div class="smoke"></div>
+          </div>
+        </div>
+        <div class="wagon"></div>
+        <div class="wagon"></div>
+        <div class="wagon"></div>
+      </div>
+    </div>
   </div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const train = params.get("train") || "";
-    const route = params.get("route") || "";
-    const date = params.get("date") || "";
-    const name = params.get("name") || "";
-    const gender = params.get("gender") || "";
-    const age = params.get("age") || "";
-    const dob = params.get("dob") || "";
+    const urlParams = new URLSearchParams(window.location.search);
+    document.getElementById("routeInfo").value = urlParams.get("route") || "";
+    document.getElementById("trainInfo").value = urlParams.get("train") || "";
+    document.getElementById("name").value = urlParams.get("name") || "";
+    document.getElementById("gender").value = urlParams.get("gender") || "";
+    document.getElementById("age").value = urlParams.get("age") || "";
+    document.getElementById("dob").value = urlParams.get("dob") || "";
 
-    document.getElementById("trainName").value = train;
-    document.getElementById("routeInfo").value = route;
-    document.getElementById("travelDate").value = date;
-    document.getElementById("name").value = name;
-    document.getElementById("gender").value = gender;
-    document.getElementById("age").value = age;
-    document.getElementById("dob").value = dob;
-
-    document.getElementById("paymentForm").addEventListener("submit", function(e) {
+    document.getElementById("paymentForm").addEventListener("submit", function (e) {
       e.preventDefault();
       alert("✅ Payment successful! Your ticket is confirmed.");
       window.location.href = "/index.html";
