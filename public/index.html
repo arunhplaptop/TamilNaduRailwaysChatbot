@@ -10,6 +10,7 @@
       font-family: 'Segoe UI', sans-serif;
       background: #f4f8f7;
     }
+
     .navbar {
       background: linear-gradient(to right, #FF9933, #ffffff, #138808);
       padding: 10px 20px;
@@ -18,15 +19,18 @@
       justify-content: space-between;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
+
     .navbar img {
       height: 50px;
     }
+
     .navbar-title {
       font-size: 22px;
       font-weight: bold;
       color: #000080;
       margin-left: 10px;
     }
+
     .container {
       max-width: 600px;
       margin: 40px auto;
@@ -36,73 +40,60 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
       text-align: center;
     }
+
     .container h2 {
       color: #003366;
       margin-bottom: 10px;
     }
-    .feature-buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-    .feature-buttons button {
-      padding: 12px;
-      font-size: 14px;
-      font-weight: bold;
-      background-color: #e6f0ff;
-      border: 1px solid #cce0ff;
-      border-radius: 8px;
-      color: #003399;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-    .feature-buttons button:hover {
-      background-color: #cce0ff;
-    }
+
     .chat-box {
       text-align: left;
       background: #fefefe;
       padding: 10px;
       border-radius: 10px;
-      max-height: 250px;
+      max-height: 200px;
       overflow-y: auto;
       margin-bottom: 15px;
       border: 1px solid #ccc;
     }
+
     .chat-message {
       margin: 10px 0;
       padding: 10px;
       border-radius: 8px;
     }
+
     .user {
       background-color: #d1ecf1;
       text-align: right;
     }
+
     .bot {
       background-color: #f8d7da;
     }
+
     .chat-input {
       display: flex;
       margin-top: 10px;
-      justify-content: center;
     }
-    .chat-input input,
-    .chat-input select {
-      padding: 10px;
-      border-radius: 6px;
+
+    .chat-input input {
+      flex: 1;
+      padding: 12px;
+      border-radius: 6px 0 0 6px;
       border: 1px solid #ccc;
-      margin-right: 5px;
-      font-size: 14px;
+      outline: none;
     }
+
     .chat-input button {
       background-color: #407BFF;
       color: #fff;
-      padding: 10px 20px;
+      padding: 12px 20px;
       border: none;
-      border-radius: 6px;
+      border-radius: 0 6px 6px 0;
       cursor: pointer;
     }
+
     .chat-input button:hover {
       background-color: #2e65d3;
     }
@@ -119,58 +110,64 @@
 
   <div class="container">
     <h2>Welcome to Tamil Nadu Railways Assistant</h2>
-
-    <div class="feature-buttons">
-      <button onclick="sendQuick('book ticket')">Ticket Booking</button>
-      <button onclick="sendQuick('platform info')">Platform Info</button>
-      <button onclick="sendQuick('help')">General Help</button>
-      <button onclick="sendQuick('customer care')">Customer Care</button>
-    </div>
-
     <div class="chat-box" id="chatBox"></div>
 
-    <!-- Dropdown-based Input -->
     <div class="chat-input">
-      <select id="fromStation">
-        <option value="">From Station</option>
-        <option value="chennai">Chennai</option>
-        <option value="madurai">Madurai</option>
-        <option value="coimbatore">Coimbatore</option>
-        <option value="trichy">Trichy</option>
-        <option value="salem">Salem</option>
-        <option value="vellore">Vellore</option>
-        <option value="erode">Erode</option>
-        <option value="nagercoil">Nagercoil</option>
-        <option value="thoothukudi">Thoothukudi</option>
-        <option value="tirunelveli">Tirunelveli</option>
-        <option value="karur">Karur</option>
-        <option value="tenkasi">Tenkasi</option>
-      </select>
-
-      <select id="toStation">
-        <option value="">To Station</option>
-        <option value="chennai">Chennai</option>
-        <option value="madurai">Madurai</option>
-        <option value="coimbatore">Coimbatore</option>
-        <option value="trichy">Trichy</option>
-        <option value="salem">Salem</option>
-        <option value="vellore">Vellore</option>
-        <option value="erode">Erode</option>
-        <option value="nagercoil">Nagercoil</option>
-        <option value="thoothukudi">Thoothukudi</option>
-        <option value="tirunelveli">Tirunelveli</option>
-        <option value="karur">Karur</option>
-        <option value="tenkasi">Tenkasi</option>
-      </select>
-
-      <button onclick="sendRoute()">Search Train</button>
-    </div>
-
-    <!-- Manual Typing Input -->
-    <div class="chat-input">
-      <input type="text" id="userInput" placeholder="Type your question here..." />
+      <input type="text" id="userInput" placeholder="Type your question here..." list="routeSuggestions" autofocus />
       <button onclick="sendMessage()">Send</button>
     </div>
+
+    <!-- Auto-suggest Route List -->
+    <datalist id="routeSuggestions">
+      <option value="chennai to madurai">
+      <option value="madurai to chennai">
+      <option value="coimbatore to chennai">
+      <option value="chennai to coimbatore">
+      <option value="chennai to trichy">
+      <option value="trichy to chennai">
+      <option value="chennai to salem">
+      <option value="salem to chennai">
+      <option value="madurai to coimbatore">
+      <option value="coimbatore to madurai">
+      <option value="chennai to vellore">
+      <option value="vellore to chennai">
+      <option value="chennai to erode">
+      <option value="erode to chennai">
+      <option value="madurai to trichy">
+      <option value="trichy to madurai">
+      <option value="chennai to nagercoil">
+      <option value="nagercoil to chennai">
+      <option value="chennai to thoothukudi">
+      <option value="thoothukudi to chennai">
+      <option value="chennai to tirunelveli">
+      <option value="tirunelveli to chennai">
+      <option value="salem to erode">
+      <option value="erode to salem">
+      <option value="vellore to madurai">
+      <option value="madurai to vellore">
+      <option value="coimbatore to salem">
+      <option value="salem to coimbatore">
+      <option value="madurai to erode">
+      <option value="erode to madurai">
+      <option value="trichy to coimbatore">
+      <option value="coimbatore to trichy">
+      <option value="vellore to coimbatore">
+      <option value="coimbatore to vellore">
+      <option value="trichy to salem">
+      <option value="salem to trichy">
+      <option value="madurai to nagercoil">
+      <option value="nagercoil to madurai">
+      <option value="tirunelveli to trichy">
+      <option value="trichy to tirunelveli">
+      <option value="chennai to karur">
+      <option value="karur to chennai">
+      <option value="vellore to tirunelveli">
+      <option value="tirunelveli to vellore">
+      <option value="coimbatore to karur">
+      <option value="karur to coimbatore">
+      <option value="tenkasi to chennai">
+      <option value="chennai to tenkasi">
+    </datalist>
   </div>
 
   <script>
@@ -199,26 +196,6 @@
       if (data.redirect) {
         window.location.href = data.redirect;
       }
-    }
-
-    function sendQuick(msg) {
-      const input = document.getElementById("userInput");
-      input.value = msg;
-      sendMessage();
-    }
-
-    function sendRoute() {
-      const from = document.getElementById("fromStation").value;
-      const to = document.getElementById("toStation").value;
-
-      if (!from || !to) {
-        alert("Please select both From and To stations.");
-        return;
-      }
-
-      const routeMessage = `${from} to ${to}`;
-      document.getElementById("userInput").value = routeMessage;
-      sendMessage();
     }
 
     function addChat(sender, text) {
