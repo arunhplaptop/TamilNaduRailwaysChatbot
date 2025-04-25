@@ -31,17 +31,6 @@
       margin-left: 10px;
     }
 
-    .nav-right {
-      display: flex;
-      gap: 15px;
-    }
-
-    .nav-right a {
-      color: #000;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
     .container {
       max-width: 600px;
       margin: 40px auto;
@@ -55,12 +44,6 @@
     .container h2 {
       color: #003366;
       margin-bottom: 10px;
-    }
-
-    .container p {
-      color: #444;
-      font-size: 15px;
-      margin-bottom: 20px;
     }
 
     .feature-buttons {
@@ -138,136 +121,35 @@
       background-color: #2e65d3;
     }
 
-    /* Train animation styles */
-    .stage {
-      position: relative;
-      margin: 50px auto;
-      height: 200px;
-      background: #cceeff;
-      overflow: hidden;
-      border-radius: 12px;
-      max-width: 100%;
-    }
-
-    .sky .cloud {
-      width: 80px;
-      height: 40px;
+    .station-form {
+      margin: 30px auto;
+      max-width: 600px;
       background: #fff;
-      border-radius: 40px;
-      position: absolute;
-      top: 30px;
-      animation: cloudmove 30s linear infinite;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: center;
     }
 
-    .sky .cloud:nth-child(2) {
-      top: 60px;
-      left: 150px;
-      animation-delay: 8s;
-    }
-
-    @keyframes cloudmove {
-      0% { left: -100px; }
-      100% { left: 100%; }
-    }
-
-    .train {
-      position: absolute;
-      display: flex;
-      bottom: 10px;
-      left: -600px;
-      animation: train-move 10s linear infinite;
-    }
-
-    @keyframes train-move {
-      0% { left: -600px; }
-      100% { left: 100%; }
-    }
-
-    .wagon, .locomotive {
-      width: 120px;
-      height: 60px;
-      margin-right: 10px;
-      background: #444;
+    .station-form select,
+    .station-form button {
+      margin: 10px;
+      padding: 10px;
+      width: 45%;
       border-radius: 6px;
-      position: relative;
+      border: 1px solid #ccc;
     }
 
-    .wagon::before, .wagon::after,
-    .locomotive::before, .locomotive::after {
-      content: '';
-      width: 20px;
-      height: 20px;
-      background: #222;
-      border-radius: 50%;
-      position: absolute;
-      bottom: -10px;
+    .station-form button {
+      width: 200px;
+      background-color: #407BFF;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
     }
 
-    .wagon::before { left: 20px; }
-    .wagon::after { right: 20px; }
-
-    .locomotive::before { left: 15px; }
-    .locomotive::after { right: 15px; }
-
-    .cabin {
-      width: 40px;
-      height: 40px;
-      background: #ff9933;
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      border-radius: 4px;
-    }
-
-    .motor {
-      width: 30px;
-      height: 20px;
-      background: #333;
-      position: absolute;
-      bottom: 5px;
-      right: 10px;
-      border-radius: 4px;
-    }
-
-    .chimney {
-      width: 12px;
-      height: 20px;
-      background: #222;
-      position: absolute;
-      top: -20px;
-      left: 40px;
-      border-radius: 2px;
-    }
-
-    .smoke {
-      width: 15px;
-      height: 15px;
-      background: rgba(255, 255, 255, 0.7);
-      position: absolute;
-      border-radius: 50%;
-      animation: smokemove 2s ease-in-out infinite;
-    }
-
-    @keyframes smokemove {
-      0% {
-        transform: translateY(0) scale(0.6);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-50px) scale(1.5);
-        opacity: 0;
-      }
-    }
-
-    .light {
-      width: 10px;
-      height: 10px;
-      background: yellow;
-      border-radius: 50%;
-      position: absolute;
-      right: 5px;
-      top: 25px;
-      box-shadow: 0 0 10px yellow;
+    .station-form button:hover {
+      background-color: #2e65d3;
     }
   </style>
 </head>
@@ -278,19 +160,13 @@
       <img src="/logo.png" alt="Tamil Nadu Railways Logo" />
       <span class="navbar-title">Tamil Nadu Railways Chatbot</span>
     </div>
-    <div class="nav-right">
-      <a href="#">Home</a>
-      <a href="#">About</a>
-      <a href="#">Contact</a>
-    </div>
   </div>
 
   <div class="container">
     <h2>Welcome to Tamil Nadu Railways Assistant</h2>
-    <p>I'm here to help you with all your railway inquiries.</p>
 
     <div class="feature-buttons">
-      <button onclick="sendQuick('Book ticket')">Ticket Booking</button>
+      <button onclick="sendQuick('book ticket')">Ticket Booking</button>
       <button onclick="sendQuick('Platform Info')">Platform Info</button>
       <button onclick="sendQuick('Help')">General Help</button>
       <button onclick="sendQuick('Customer Care')">Customer Care</button>
@@ -304,26 +180,44 @@
     </div>
   </div>
 
-  <!-- ✅ NEW TRAIN ANIMATION SECTION -->
-  <section class="stage">
-    <div class="sky">
-      <div class="cloud"></div>
-      <div class="cloud"></div>
-    </div>
-    <div class="train">
-      <div class="wagon"></div>
-      <div class="wagon"></div>
-      <div class="wagon"></div>
-      <div class="locomotive">
-        <div class="cabin"></div>
-        <div class="motor"></div>
-        <div class="chimney">
-          <div class="smoke"></div>
-        </div>
-        <div class="light"></div>
-      </div>
-    </div>
-  </section>
+  <!-- Station Selector -->
+  <div class="station-form">
+    <h3>Select Route</h3>
+    <select id="fromStation">
+      <option value="">From Station</option>
+      <option>Chennai</option>
+      <option>Madurai</option>
+      <option>Coimbatore</option>
+      <option>Trichy</option>
+      <option>Salem</option>
+      <option>Vellore</option>
+      <option>Erode</option>
+      <option>Nagercoil</option>
+      <option>Thoothukudi</option>
+      <option>Tirunelveli</option>
+      <option>Karur</option>
+      <option>Tenkasi</option>
+    </select>
+
+    <select id="toStation">
+      <option value="">To Station</option>
+      <option>Chennai</option>
+      <option>Madurai</option>
+      <option>Coimbatore</option>
+      <option>Trichy</option>
+      <option>Salem</option>
+      <option>Vellore</option>
+      <option>Erode</option>
+      <option>Nagercoil</option>
+      <option>Thoothukudi</option>
+      <option>Tirunelveli</option>
+      <option>Karur</option>
+      <option>Tenkasi</option>
+    </select>
+
+    <br />
+    <button onclick="sendRoute()">Search Train</button>
+  </div>
 
   <script>
     async function sendMessage() {
@@ -344,22 +238,28 @@
       });
 
       const data = await response.json();
-
       removeLastBotMessage();
-
       addChat("bot", data.reply || "Sorry, something went wrong.");
 
       if (data.redirect) {
         window.location.href = data.redirect;
       }
-
-      input.focus();
     }
 
     function sendQuick(message) {
-      const input = document.getElementById("userInput");
-      input.value = message;
+      document.getElementById("userInput").value = message;
       sendMessage();
+    }
+
+    function sendRoute() {
+      const from = document.getElementById("fromStation").value.trim();
+      const to = document.getElementById("toStation").value.trim();
+      if (from && to && from.toLowerCase() !== to.toLowerCase()) {
+        document.getElementById("userInput").value = `${from.toLowerCase()} to ${to.toLowerCase()}`;
+        sendMessage();
+      } else {
+        alert("Please select valid source and destination stations.");
+      }
     }
 
     function addChat(sender, text) {
@@ -379,6 +279,5 @@
       }
     }
   </script>
-
 </body>
 </html>
