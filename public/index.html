@@ -16,7 +16,6 @@
       padding: 10px 20px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
@@ -33,38 +32,32 @@
 
     .container {
       max-width: 600px;
-      margin: 30px auto;
+      margin: 40px auto;
       background: #fff;
       padding: 30px;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
       text-align: center;
+      position: relative;
     }
 
-    .welcome-panel {
-      background: #e6f0ff;
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 25px;
-    }
-
-    .welcome-panel h2 {
+    h2 {
       color: #003366;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .feature-buttons {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 10px;
+      gap: 15px;
+      margin: 20px 0 30px;
     }
 
     .feature-buttons button {
-      padding: 10px;
+      padding: 12px;
       font-size: 14px;
       font-weight: bold;
-      background-color: #ffffff;
+      background-color: #e6f0ff;
       border: 1px solid #cce0ff;
       border-radius: 8px;
       color: #003399;
@@ -83,7 +76,7 @@
       border-radius: 10px;
       max-height: 200px;
       overflow-y: auto;
-      margin: 20px 0 10px;
+      margin-bottom: 15px;
       border: 1px solid #ccc;
     }
 
@@ -93,20 +86,16 @@
       border-radius: 8px;
     }
 
-    .user {
-      background-color: #d1ecf1;
-      text-align: right;
-    }
-
-    .bot {
-      background-color: #f8d7da;
-    }
+    .user { background-color: #d1ecf1; text-align: right; }
+    .bot { background-color: #f8d7da; }
 
     .chat-input {
       display: flex;
+      position: relative;
+      margin-top: 10px;
     }
 
-    .chat-input input {
+    #userInput {
       flex: 1;
       padding: 12px;
       border-radius: 6px 0 0 6px;
@@ -127,110 +116,105 @@
       background-color: #2e65d3;
     }
 
-    .dropdowns {
-      display: flex;
-      gap: 10px;
-      margin: 20px 0 10px;
-    }
-
-    select {
-      flex: 1;
-      padding: 10px;
-      border-radius: 6px;
+    .suggestions {
+      position: absolute;
+      bottom: -100%;
+      left: 0;
+      width: 100%;
+      background: #fff;
       border: 1px solid #ccc;
-      font-size: 14px;
+      border-top: none;
+      max-height: 160px;
+      overflow-y: auto;
+      z-index: 999;
+      border-radius: 0 0 6px 6px;
     }
 
-    .btn-send {
-      margin-top: 10px;
-      padding: 10px 20px;
-      background: #28a745;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
+    .suggestions div {
+      padding: 10px;
       cursor: pointer;
     }
 
-    .btn-send:hover {
-      background: #218838;
+    .suggestions div:hover {
+      background-color: #f1f1f1;
     }
   </style>
 </head>
 <body>
-
   <div class="navbar">
-    <div style="display: flex; align-items: center;">
-      <img src="/logo.png" alt="Tamil Nadu Railways Logo" />
-      <span class="navbar-title">Tamil Nadu Railways Chatbot</span>
-    </div>
+    <img src="/logo.png" alt="Tamil Nadu Railways Logo" />
+    <span class="navbar-title">Tamil Nadu Railways Chatbot</span>
   </div>
 
   <div class="container">
-    <!-- Welcome Panel -->
-    <div class="welcome-panel">
-      <h2>Welcome to Tamil Nadu Railways Assistant</h2>
-      <div class="feature-buttons">
-        <button onclick="sendQuick('Book ticket')">Ticket Booking</button>
-        <button onclick="sendQuick('Platform Info')">Platform Info</button>
-        <button onclick="sendQuick('Help')">General Help</button>
-        <button onclick="sendQuick('Customer Care')">Customer Care</button>
-      </div>
+    <h2>Welcome to Tamil Nadu Railways Assistant</h2>
+
+    <div class="feature-buttons">
+      <button onclick="sendQuick('book ticket')">Ticket Booking</button>
+      <button onclick="sendQuick('platform info')">Platform Info</button>
+      <button onclick="sendQuick('help')">General Help</button>
+      <button onclick="sendQuick('customer care')">Customer Care</button>
     </div>
 
-    <!-- Chat Output -->
     <div class="chat-box" id="chatBox"></div>
 
-    <!-- User Text Input -->
     <div class="chat-input">
-      <input type="text" id="userInput" placeholder="Type your question here..." />
+      <input type="text" id="userInput" placeholder="Type your question here..." autocomplete="off" />
       <button onclick="sendMessage()">Send</button>
+      <div id="suggestions" class="suggestions"></div>
     </div>
-
-    <!-- Dropdown Route Input -->
-    <div class="dropdowns">
-      <select id="sourceStation">
-        <option value="">Select Source</option>
-        <option>chennai</option>
-        <option>madurai</option>
-        <option>coimbatore</option>
-        <option>trichy</option>
-        <option>salem</option>
-        <option>vellore</option>
-        <option>erode</option>
-        <option>nagercoil</option>
-        <option>thoothukudi</option>
-        <option>tirunelveli</option>
-        <option>karur</option>
-        <option>tenkasi</option>
-      </select>
-      <select id="destinationStation">
-        <option value="">Select Destination</option>
-        <option>chennai</option>
-        <option>madurai</option>
-        <option>coimbatore</option>
-        <option>trichy</option>
-        <option>salem</option>
-        <option>vellore</option>
-        <option>erode</option>
-        <option>nagercoil</option>
-        <option>thoothukudi</option>
-        <option>tirunelveli</option>
-        <option>karur</option>
-        <option>tenkasi</option>
-      </select>
-    </div>
-    <button class="btn-send" onclick="sendDropdownRoute()">Search Train</button>
   </div>
 
   <script>
+    const allRoutes = [
+      "chennai to madurai", "madurai to chennai", "coimbatore to chennai", "chennai to coimbatore",
+      "chennai to trichy", "trichy to chennai", "chennai to salem", "salem to chennai",
+      "madurai to coimbatore", "coimbatore to madurai", "chennai to vellore", "vellore to chennai",
+      "chennai to erode", "erode to chennai", "madurai to trichy", "trichy to madurai",
+      "chennai to nagercoil", "nagercoil to chennai", "chennai to thoothukudi", "thoothukudi to chennai",
+      "chennai to tirunelveli", "tirunelveli to chennai", "salem to erode", "erode to salem",
+      "vellore to madurai", "madurai to vellore", "coimbatore to salem", "salem to coimbatore",
+      "madurai to erode", "erode to madurai", "trichy to coimbatore", "coimbatore to trichy",
+      "vellore to coimbatore", "coimbatore to vellore", "trichy to salem", "salem to trichy",
+      "madurai to nagercoil", "nagercoil to madurai", "tirunelveli to trichy", "trichy to tirunelveli",
+      "chennai to karur", "karur to chennai", "vellore to tirunelveli", "tirunelveli to vellore",
+      "coimbatore to karur", "karur to coimbatore", "tenkasi to chennai", "chennai to tenkasi"
+    ];
+
+    const input = document.getElementById("userInput");
+    const suggestionBox = document.getElementById("suggestions");
+
+    input.addEventListener("input", function () {
+      const value = this.value.toLowerCase().trim();
+      suggestionBox.innerHTML = "";
+      if (!value) return;
+
+      const matched = allRoutes.filter(route => route.startsWith(value)).slice(0, 6);
+
+      matched.forEach(route => {
+        const div = document.createElement("div");
+        div.textContent = route;
+        div.onclick = () => {
+          input.value = route;
+          suggestionBox.innerHTML = "";
+        };
+        suggestionBox.appendChild(div);
+      });
+    });
+
+    document.addEventListener("click", e => {
+      if (!suggestionBox.contains(e.target) && e.target !== input) {
+        suggestionBox.innerHTML = "";
+      }
+    });
+
     async function sendMessage() {
-      const input = document.getElementById("userInput");
       const message = input.value.trim();
       if (!message) return;
 
       addChat("user", message);
       input.value = "";
-      input.focus();
+      suggestionBox.innerHTML = "";
 
       addChat("bot", "⏳ Typing...");
 
@@ -241,31 +225,14 @@
       });
 
       const data = await response.json();
+
       removeLastBotMessage();
       addChat("bot", data.reply || "Sorry, something went wrong.");
-
-      if (data.redirect) {
-        window.location.href = data.redirect;
-      }
+      if (data.redirect) window.location.href = data.redirect;
     }
 
     function sendQuick(message) {
-      const input = document.getElementById("userInput");
       input.value = message;
-      sendMessage();
-    }
-
-    function sendDropdownRoute() {
-      const from = document.getElementById("sourceStation").value.trim().toLowerCase();
-      const to = document.getElementById("destinationStation").value.trim().toLowerCase();
-
-      if (!from || !to || from === to) {
-        alert("Please select valid source and destination stations.");
-        return;
-      }
-
-      const routeQuery = `${from} to ${to}`;
-      document.getElementById("userInput").value = routeQuery;
       sendMessage();
     }
 
@@ -280,12 +247,9 @@
 
     function removeLastBotMessage() {
       const chatBox = document.getElementById("chatBox");
-      const messages = chatBox.getElementsByClassName("chat-message bot");
-      if (messages.length > 0) {
-        chatBox.removeChild(messages[messages.length - 1]);
-      }
+      const messages = chatBox.querySelectorAll(".chat-message.bot");
+      if (messages.length > 0) chatBox.removeChild(messages[messages.length - 1]);
     }
   </script>
-
 </body>
 </html>
