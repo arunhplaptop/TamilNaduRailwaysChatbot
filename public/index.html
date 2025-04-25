@@ -138,14 +138,15 @@
       background-color: #2e65d3;
     }
 
+    /* Train Animation */
     .stage {
       position: relative;
       margin: 50px auto;
       overflow: hidden;
       background: #cceeff;
-      height: 250px;
+      height: 230px;
       border-radius: 10px;
-      max-width: 900px;
+      max-width: 100%;
     }
 
     .sky {
@@ -167,9 +168,9 @@
     }
 
     .cloud:nth-child(2) {
-      top: 50px;
-      left: 200px;
-      animation-delay: 10s;
+      top: 60px;
+      left: 150px;
+      animation-delay: 8s;
     }
 
     @keyframes cloudmove {
@@ -177,56 +178,67 @@
       100% { left: 100%; }
     }
 
-    .center {
-      position: relative;
-      animation: trainmove 8s linear infinite;
-    }
-
-    @keyframes trainmove {
-      0% { left: -1000px; }
-      100% { left: 100%; }
-    }
-
-    /* Placeholder styles for new train - you can expand these */
-    .mountains,
-    .bridge,
-    .frame,
-    .train,
-    .engine-front,
-    .chimney,
-    .engine-body,
-    .compartment,
-    .compartment-window,
-    .wheel-holder,
-    .wheel,
-    .wheel-joint {
-      /* Add detailed styles as needed */
-    }
-
-    .smoke {
-      width: 20px;
-      height: 20px;
-      background: rgba(255,255,255,0.7);
+    .train-track {
       position: absolute;
-      top: -30px;
-      left: -5px;
-      border-radius: 50%;
-      animation: smokemove 2s ease-in-out infinite;
+      bottom: 20px;
+      width: 200%;
+      height: 50px;
+      background: repeating-linear-gradient(
+        to right,
+        #333 0 20px,
+        transparent 20px 40px
+      );
+      animation: trackmove 5s linear infinite;
     }
 
-    .smoke-2 { animation-delay: 0.5s; }
-    .smoke-3 { animation-delay: 1s; }
-    .smoke-4 { animation-delay: 1.5s; }
+    @keyframes trackmove {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
 
-    @keyframes smokemove {
-      0% {
-        transform: translateY(0) scale(0.5);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-50px) scale(1.5);
-        opacity: 0;
-      }
+    .train-body {
+      position: absolute;
+      bottom: 50px;
+      left: -400px;
+      display: flex;
+      animation: trainroll 10s linear infinite;
+    }
+
+    .coach {
+      width: 100px;
+      height: 60px;
+      background: #ffcc00;
+      border: 2px solid #333;
+      margin-right: 10px;
+      border-radius: 4px;
+      position: relative;
+    }
+
+    .coach::before {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 10px;
+      width: 15px;
+      height: 15px;
+      background: #333;
+      border-radius: 50%;
+    }
+
+    .coach::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      right: 10px;
+      width: 15px;
+      height: 15px;
+      background: #333;
+      border-radius: 50%;
+    }
+
+    @keyframes trainroll {
+      0% { transform: translateX(-500px); }
+      100% { transform: translateX(100%); }
     }
   </style>
 </head>
@@ -263,57 +275,19 @@
     </div>
   </div>
 
-  <!-- 🚂 Updated Train Section -->
   <section class="stage">
     <div class="sky">
       <div class="cloud"></div>
       <div class="cloud"></div>
     </div>
-    <div class="center">
-      <div class="mountains"></div>
-      <div class="frame">
-        <div class="train">
-          <div class="engine-front">
-            <div class="chimney">
-              <div class="smoke"></div>
-              <div class="smoke smoke-2"></div>
-              <div class="smoke smoke-3"></div>
-              <div class="smoke smoke-4"></div>
-            </div>
-          </div>
-
-          <div class="engine-body"></div>
-
-          <div class="compartment">
-            <div class="compartment-window"></div>
-          </div>
-
-          <div class="compartment compartment-two">
-            <div class="compartment-window"></div>
-          </div>
-
-          <div class="compartment compartment-three">
-            <div class="compartment-window"></div>
-          </div>
-
-          <div class="wheel-holder">
-            <div class="wheel"></div>
-            <div class="wheel wheel-2">
-              <div class="wheel-joint"></div>
-              <div class="wheel-joint wheel-joint-2"></div>
-            </div>
-            <div class="wheel wheel-3"></div>
-            <div class="wheel wheel-4"></div>
-            <div class="wheel wheel-5"></div>
-            <div class="wheel wheel-6"></div>
-            <div class="wheel wheel-7"></div>
-            <div class="wheel wheel-8"></div>
-            <div class="wheel wheel-9"></div>
-          </div>
-        </div>
-      </div>
-      <div class="bridge"></div>
+    <div class="train-body">
+      <div class="coach"></div>
+      <div class="coach"></div>
+      <div class="coach"></div>
+      <div class="coach"></div>
+      <div class="coach"></div>
     </div>
+    <div class="train-track"></div>
   </section>
 
   <script>
@@ -337,14 +311,10 @@
       const data = await response.json();
 
       removeLastBotMessage();
-
       addChat("bot", data.reply || "Sorry, something went wrong.");
-
       if (data.redirect) {
         window.location.href = data.redirect;
       }
-
-      input.focus();
     }
 
     function sendQuick(message) {
@@ -370,6 +340,5 @@
       }
     }
   </script>
-
 </body>
 </html>
