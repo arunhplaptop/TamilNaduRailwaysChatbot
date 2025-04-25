@@ -138,36 +138,28 @@
       background-color: #2e65d3;
     }
 
-    /* Train Animation */
+    /* Train animation styles */
     .stage {
       position: relative;
       margin: 50px auto;
-      overflow: hidden;
+      height: 200px;
       background: #cceeff;
-      height: 230px;
-      border-radius: 10px;
+      overflow: hidden;
+      border-radius: 12px;
       max-width: 100%;
     }
 
-    .sky {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: #cceeff;
-      overflow: hidden;
-    }
-
-    .cloud {
+    .sky .cloud {
       width: 80px;
       height: 40px;
       background: #fff;
       border-radius: 40px;
       position: absolute;
-      top: 20px;
+      top: 30px;
       animation: cloudmove 30s linear infinite;
     }
 
-    .cloud:nth-child(2) {
+    .sky .cloud:nth-child(2) {
       top: 60px;
       left: 150px;
       animation-delay: 8s;
@@ -178,67 +170,104 @@
       100% { left: 100%; }
     }
 
-    .train-track {
+    .train {
       position: absolute;
-      bottom: 20px;
-      width: 200%;
-      height: 50px;
-      background: repeating-linear-gradient(
-        to right,
-        #333 0 20px,
-        transparent 20px 40px
-      );
-      animation: trackmove 5s linear infinite;
-    }
-
-    @keyframes trackmove {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    .train-body {
-      position: absolute;
-      bottom: 50px;
-      left: -400px;
       display: flex;
-      animation: trainroll 10s linear infinite;
+      bottom: 10px;
+      left: -600px;
+      animation: train-move 10s linear infinite;
     }
 
-    .coach {
-      width: 100px;
+    @keyframes train-move {
+      0% { left: -600px; }
+      100% { left: 100%; }
+    }
+
+    .wagon, .locomotive {
+      width: 120px;
       height: 60px;
-      background: #ffcc00;
-      border: 2px solid #333;
       margin-right: 10px;
-      border-radius: 4px;
+      background: #444;
+      border-radius: 6px;
       position: relative;
     }
 
-    .coach::before {
+    .wagon::before, .wagon::after,
+    .locomotive::before, .locomotive::after {
       content: '';
+      width: 20px;
+      height: 20px;
+      background: #222;
+      border-radius: 50%;
       position: absolute;
-      bottom: -12px;
+      bottom: -10px;
+    }
+
+    .wagon::before { left: 20px; }
+    .wagon::after { right: 20px; }
+
+    .locomotive::before { left: 15px; }
+    .locomotive::after { right: 15px; }
+
+    .cabin {
+      width: 40px;
+      height: 40px;
+      background: #ff9933;
+      position: absolute;
+      top: 10px;
       left: 10px;
-      width: 15px;
-      height: 15px;
-      background: #333;
-      border-radius: 50%;
+      border-radius: 4px;
     }
 
-    .coach::after {
-      content: '';
+    .motor {
+      width: 30px;
+      height: 20px;
+      background: #333;
       position: absolute;
-      bottom: -12px;
+      bottom: 5px;
       right: 10px;
-      width: 15px;
-      height: 15px;
-      background: #333;
-      border-radius: 50%;
+      border-radius: 4px;
     }
 
-    @keyframes trainroll {
-      0% { transform: translateX(-500px); }
-      100% { transform: translateX(100%); }
+    .chimney {
+      width: 12px;
+      height: 20px;
+      background: #222;
+      position: absolute;
+      top: -20px;
+      left: 40px;
+      border-radius: 2px;
+    }
+
+    .smoke {
+      width: 15px;
+      height: 15px;
+      background: rgba(255, 255, 255, 0.7);
+      position: absolute;
+      border-radius: 50%;
+      animation: smokemove 2s ease-in-out infinite;
+    }
+
+    @keyframes smokemove {
+      0% {
+        transform: translateY(0) scale(0.6);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-50px) scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    .light {
+      width: 10px;
+      height: 10px;
+      background: yellow;
+      border-radius: 50%;
+      position: absolute;
+      right: 5px;
+      top: 25px;
+      box-shadow: 0 0 10px yellow;
     }
   </style>
 </head>
@@ -261,10 +290,10 @@
     <p>I'm here to help you with all your railway inquiries.</p>
 
     <div class="feature-buttons">
-      <button onclick="sendQuick('Book ticket from Coimbatore to Chennai on 21 April for Sleeper - passenger John')">Ticket Booking<br><small>Booking assistance</small></button>
-      <button onclick="sendQuick('Platform Info')">Platform Info<br><small>Live updates</small></button>
-      <button onclick="sendQuick('Help')">General Help<br><small>Railway services</small></button>
-      <button onclick="sendQuick('Customer Care')">Customer Care<br><small>Call 139</small></button>
+      <button onclick="sendQuick('Book ticket')">Ticket Booking</button>
+      <button onclick="sendQuick('Platform Info')">Platform Info</button>
+      <button onclick="sendQuick('Help')">General Help</button>
+      <button onclick="sendQuick('Customer Care')">Customer Care</button>
     </div>
 
     <div class="chat-box" id="chatBox"></div>
@@ -275,19 +304,25 @@
     </div>
   </div>
 
+  <!-- ✅ NEW TRAIN ANIMATION SECTION -->
   <section class="stage">
     <div class="sky">
       <div class="cloud"></div>
       <div class="cloud"></div>
     </div>
-    <div class="train-body">
-      <div class="coach"></div>
-      <div class="coach"></div>
-      <div class="coach"></div>
-      <div class="coach"></div>
-      <div class="coach"></div>
+    <div class="train">
+      <div class="wagon"></div>
+      <div class="wagon"></div>
+      <div class="wagon"></div>
+      <div class="locomotive">
+        <div class="cabin"></div>
+        <div class="motor"></div>
+        <div class="chimney">
+          <div class="smoke"></div>
+        </div>
+        <div class="light"></div>
+      </div>
     </div>
-    <div class="train-track"></div>
   </section>
 
   <script>
@@ -311,10 +346,14 @@
       const data = await response.json();
 
       removeLastBotMessage();
+
       addChat("bot", data.reply || "Sorry, something went wrong.");
+
       if (data.redirect) {
         window.location.href = data.redirect;
       }
+
+      input.focus();
     }
 
     function sendQuick(message) {
@@ -340,5 +379,6 @@
       }
     }
   </script>
+
 </body>
 </html>
