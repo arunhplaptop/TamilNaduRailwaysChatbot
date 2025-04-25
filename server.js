@@ -70,15 +70,15 @@ app.post('/ask', async (req, res) => {
   }
 
   // Greeting response
-  if (["hi", "hello", "hey"].includes(message)) {
-    reply = "Hello! I can help you with ticket bookings, train schedules, and more. Try typing 'book ticket' or 'Chennai to Madurai'.";
+  if (["hi", "hello", "hey"].some(greet => message.includes(greet))) {
+    reply = "👋 Hello! I can help you with ticket bookings, train schedules, and more. Try typing 'book ticket' or a route like 'Chennai to Madurai'.";
     return res.json({ reply });
   }
 
   // Handle book ticket
   if (message.includes("book ticket")) {
     userState.awaitingRoute = true;
-    reply = "Please enter your route (e.g., Chennai to Madurai).";
+    reply = "🎟️ Please enter your route (e.g., Chennai to Madurai).";
     return res.json({ reply });
   }
 
@@ -94,7 +94,7 @@ app.post('/ask', async (req, res) => {
         userState.awaitingPassengerDetails = true;
         reply = `✅ Route: ${routeKey} 🚆 Train: ${routes[routeKey]}\nPlease provide passenger details in this format:\nName, Gender, Age, DOB (YYYY-MM-DD)`;
       } else {
-        reply = `❌ Sorry, no train found for "${routeKey}".`;
+        reply = `❌ Sorry, no train found for \"${routeKey}\".`;
       }
     } else {
       reply = "⚠️ Please enter the route in the format: source to destination (e.g., Chennai to Madurai).";
@@ -112,7 +112,7 @@ app.post('/ask', async (req, res) => {
       userState.awaitingPassengerDetails = true;
       reply = `✅ Route: ${routeKey} 🚆 Train: ${routes[routeKey]}\nPlease provide passenger details in this format:\nName, Gender, Age, DOB (YYYY-MM-DD)`;
     } else {
-      reply = `❌ Sorry, no train found for "${routeKey}".`;
+      reply = `❌ Sorry, no train found for \"${routeKey}\".`;
     }
     return res.json({ reply });
   }
