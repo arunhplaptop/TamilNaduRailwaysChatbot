@@ -33,7 +33,7 @@
 
     .container {
       max-width: 600px;
-      margin: 40px auto;
+      margin: 30px auto;
       background: #fff;
       padding: 30px;
       border-radius: 12px;
@@ -41,9 +41,39 @@
       text-align: center;
     }
 
-    .container h2 {
+    .welcome-panel {
+      background: #e6f0ff;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+    }
+
+    .welcome-panel h2 {
       color: #003366;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+    }
+
+    .feature-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .feature-buttons button {
+      padding: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      background-color: #ffffff;
+      border: 1px solid #cce0ff;
+      border-radius: 8px;
+      color: #003399;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .feature-buttons button:hover {
+      background-color: #cce0ff;
     }
 
     .chat-box {
@@ -53,7 +83,7 @@
       border-radius: 10px;
       max-height: 200px;
       overflow-y: auto;
-      margin-bottom: 15px;
+      margin: 20px 0 10px;
       border: 1px solid #ccc;
     }
 
@@ -74,7 +104,6 @@
 
     .chat-input {
       display: flex;
-      margin-top: 10px;
     }
 
     .chat-input input {
@@ -97,6 +126,34 @@
     .chat-input button:hover {
       background-color: #2e65d3;
     }
+
+    .dropdowns {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0 10px;
+    }
+
+    select {
+      flex: 1;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .btn-send {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn-send:hover {
+      background: #218838;
+    }
   </style>
 </head>
 <body>
@@ -109,65 +166,60 @@
   </div>
 
   <div class="container">
-    <h2>Welcome to Tamil Nadu Railways Assistant</h2>
+    <!-- Welcome Panel -->
+    <div class="welcome-panel">
+      <h2>Welcome to Tamil Nadu Railways Assistant</h2>
+      <div class="feature-buttons">
+        <button onclick="sendQuick('Book ticket')">Ticket Booking</button>
+        <button onclick="sendQuick('Platform Info')">Platform Info</button>
+        <button onclick="sendQuick('Help')">General Help</button>
+        <button onclick="sendQuick('Customer Care')">Customer Care</button>
+      </div>
+    </div>
+
+    <!-- Chat Output -->
     <div class="chat-box" id="chatBox"></div>
 
+    <!-- User Text Input -->
     <div class="chat-input">
-      <input type="text" id="userInput" placeholder="Type your question here..." list="routeSuggestions" autofocus />
+      <input type="text" id="userInput" placeholder="Type your question here..." />
       <button onclick="sendMessage()">Send</button>
     </div>
 
-    <!-- Auto-suggest Route List -->
-    <datalist id="routeSuggestions">
-      <option value="chennai to madurai">
-      <option value="madurai to chennai">
-      <option value="coimbatore to chennai">
-      <option value="chennai to coimbatore">
-      <option value="chennai to trichy">
-      <option value="trichy to chennai">
-      <option value="chennai to salem">
-      <option value="salem to chennai">
-      <option value="madurai to coimbatore">
-      <option value="coimbatore to madurai">
-      <option value="chennai to vellore">
-      <option value="vellore to chennai">
-      <option value="chennai to erode">
-      <option value="erode to chennai">
-      <option value="madurai to trichy">
-      <option value="trichy to madurai">
-      <option value="chennai to nagercoil">
-      <option value="nagercoil to chennai">
-      <option value="chennai to thoothukudi">
-      <option value="thoothukudi to chennai">
-      <option value="chennai to tirunelveli">
-      <option value="tirunelveli to chennai">
-      <option value="salem to erode">
-      <option value="erode to salem">
-      <option value="vellore to madurai">
-      <option value="madurai to vellore">
-      <option value="coimbatore to salem">
-      <option value="salem to coimbatore">
-      <option value="madurai to erode">
-      <option value="erode to madurai">
-      <option value="trichy to coimbatore">
-      <option value="coimbatore to trichy">
-      <option value="vellore to coimbatore">
-      <option value="coimbatore to vellore">
-      <option value="trichy to salem">
-      <option value="salem to trichy">
-      <option value="madurai to nagercoil">
-      <option value="nagercoil to madurai">
-      <option value="tirunelveli to trichy">
-      <option value="trichy to tirunelveli">
-      <option value="chennai to karur">
-      <option value="karur to chennai">
-      <option value="vellore to tirunelveli">
-      <option value="tirunelveli to vellore">
-      <option value="coimbatore to karur">
-      <option value="karur to coimbatore">
-      <option value="tenkasi to chennai">
-      <option value="chennai to tenkasi">
-    </datalist>
+    <!-- Dropdown Route Input -->
+    <div class="dropdowns">
+      <select id="sourceStation">
+        <option value="">Select Source</option>
+        <option>chennai</option>
+        <option>madurai</option>
+        <option>coimbatore</option>
+        <option>trichy</option>
+        <option>salem</option>
+        <option>vellore</option>
+        <option>erode</option>
+        <option>nagercoil</option>
+        <option>thoothukudi</option>
+        <option>tirunelveli</option>
+        <option>karur</option>
+        <option>tenkasi</option>
+      </select>
+      <select id="destinationStation">
+        <option value="">Select Destination</option>
+        <option>chennai</option>
+        <option>madurai</option>
+        <option>coimbatore</option>
+        <option>trichy</option>
+        <option>salem</option>
+        <option>vellore</option>
+        <option>erode</option>
+        <option>nagercoil</option>
+        <option>thoothukudi</option>
+        <option>tirunelveli</option>
+        <option>karur</option>
+        <option>tenkasi</option>
+      </select>
+    </div>
+    <button class="btn-send" onclick="sendDropdownRoute()">Search Train</button>
   </div>
 
   <script>
@@ -189,13 +241,32 @@
       });
 
       const data = await response.json();
-
       removeLastBotMessage();
       addChat("bot", data.reply || "Sorry, something went wrong.");
 
       if (data.redirect) {
         window.location.href = data.redirect;
       }
+    }
+
+    function sendQuick(message) {
+      const input = document.getElementById("userInput");
+      input.value = message;
+      sendMessage();
+    }
+
+    function sendDropdownRoute() {
+      const from = document.getElementById("sourceStation").value.trim().toLowerCase();
+      const to = document.getElementById("destinationStation").value.trim().toLowerCase();
+
+      if (!from || !to || from === to) {
+        alert("Please select valid source and destination stations.");
+        return;
+      }
+
+      const routeQuery = `${from} to ${to}`;
+      document.getElementById("userInput").value = routeQuery;
+      sendMessage();
     }
 
     function addChat(sender, text) {
