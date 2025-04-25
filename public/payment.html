@@ -1,8 +1,7 @@
-<!-- Save as public/payment.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Ticket Payment - Tamil Nadu Railways</title>
   <style>
     body {
@@ -27,7 +26,7 @@
       margin-left: 10px;
     }
     .container {
-      max-width: 500px;
+      max-width: 600px;
       margin: 40px auto;
       background: #fff;
       padding: 30px;
@@ -55,33 +54,65 @@
 </head>
 <body>
   <div class="navbar">
-    <img src="logo.png" alt="Tamil Nadu Railways Logo">
+    <img src="/logo.png" alt="Tamil Nadu Railways Logo">
     <span class="navbar-title">Tamil Nadu Railways</span>
   </div>
 
   <div class="container">
     <h2>Ticket Payment</h2>
     <form id="paymentForm">
-      <input type="text" id="trainName" readonly />
-      <input type="text" id="passengerName" placeholder="Passenger Name" />
-      <input type="text" id="gender" placeholder="Gender" />
-      <input type="number" id="age" placeholder="Age" />
-      <input type="text" id="dob" placeholder="Date of Birth (YYYY-MM-DD)" />
+      <input type="text" id="routeInfo" readonly placeholder="Route">
+      <input type="text" id="travelDate" readonly placeholder="Travel Date">
+      <input type="text" id="trainName" readonly>
+      <input type="text" id="name" placeholder="Passenger Name" required>
+      <select id="gender" required>
+        <option value="">Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+      <input type="number" id="age" placeholder="Age" required>
+      <input type="date" id="dob" required>
+      <select required>
+        <option value="">Select Class</option>
+        <option value="sleeper">Sleeper</option>
+        <option value="ac">AC</option>
+        <option value="chaircar">Chair Car</option>
+      </select>
+      <input type="number" placeholder="Amount (₹)" required>
+      <select required>
+        <option value="">Select Payment Mode</option>
+        <option value="upi">UPI</option>
+        <option value="card">Credit/Debit Card</option>
+        <option value="netbanking">Net Banking</option>
+        <option value="wallet">Wallet</option>
+        <option value="emi">EMI</option>
+      </select>
       <button type="submit">Pay Now</button>
     </form>
   </div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    document.getElementById("trainName").value = params.get("train") || "";
-    document.getElementById("passengerName").value = params.get("name") || "";
-    document.getElementById("gender").value = params.get("gender") || "";
-    document.getElementById("age").value = params.get("age") || "";
-    document.getElementById("dob").value = params.get("dob") || "";
+    const train = params.get("train") || "";
+    const route = params.get("route") || "";
+    const date = params.get("date") || "";
+    const name = params.get("name") || "";
+    const gender = params.get("gender") || "";
+    const age = params.get("age") || "";
+    const dob = params.get("dob") || "";
+
+    document.getElementById("trainName").value = train;
+    document.getElementById("routeInfo").value = route;
+    document.getElementById("travelDate").value = date;
+    document.getElementById("name").value = name;
+    document.getElementById("gender").value = gender;
+    document.getElementById("age").value = age;
+    document.getElementById("dob").value = dob;
 
     document.getElementById("paymentForm").addEventListener("submit", function(e) {
       e.preventDefault();
-      alert("✅ Payment successful! Ticket confirmed.");
+      alert("✅ Payment successful! Your ticket is confirmed.");
       window.location.href = "/index.html";
     });
   </script>
