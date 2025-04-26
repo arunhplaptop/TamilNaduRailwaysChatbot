@@ -10,7 +10,6 @@
       font-family: 'Segoe UI', sans-serif;
       background: #f4f8f7;
     }
-
     .navbar {
       background: linear-gradient(to right, #FF9933, #ffffff, #138808);
       padding: 10px 20px;
@@ -18,18 +17,15 @@
       align-items: center;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
-
     .navbar img {
       height: 50px;
     }
-
     .navbar-title {
       font-size: 22px;
       font-weight: bold;
       color: #000080;
       margin-left: 10px;
     }
-
     .container {
       max-width: 600px;
       margin: 40px auto;
@@ -39,25 +35,20 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
       text-align: center;
     }
-
     .container h2 {
       color: #003366;
       margin-bottom: 10px;
     }
-
     .container p {
       color: #555;
       margin-bottom: 20px;
-      font-size: 16px;
     }
-
     .feature-buttons {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 15px;
       margin-bottom: 30px;
     }
-
     .feature-buttons button {
       padding: 12px;
       font-size: 14px;
@@ -69,11 +60,9 @@
       cursor: pointer;
       transition: 0.3s ease;
     }
-
     .feature-buttons button:hover {
       background-color: #cce0ff;
     }
-
     .chat-box {
       text-align: left;
       background: #fefefe;
@@ -84,33 +73,27 @@
       margin-bottom: 15px;
       border: 1px solid #ccc;
     }
-
     .chat-message {
       margin: 10px 0;
       padding: 10px;
       border-radius: 8px;
     }
-
     .user {
       background-color: #d1ecf1;
       text-align: right;
     }
-
     .bot {
       background-color: #f8d7da;
     }
-
     .chat-input {
       display: flex;
       margin-top: 10px;
       position: relative;
     }
-
     .input-container {
       position: relative;
       width: 100%;
     }
-
     #userInput {
       width: 100%;
       padding: 12px;
@@ -119,7 +102,6 @@
       outline: none;
       font-size: 15px;
     }
-
     #suggestions {
       position: absolute;
       top: 100%;
@@ -138,17 +120,14 @@
       display: none;
       z-index: 999;
     }
-
     #suggestions li {
       padding: 12px;
       cursor: pointer;
       transition: background 0.3s ease;
     }
-
     #suggestions li:hover {
       background: #f1f1f1;
     }
-
     .chat-input button {
       background-color: #407BFF;
       color: #fff;
@@ -157,7 +136,6 @@
       border-radius: 0 8px 8px 0;
       cursor: pointer;
     }
-
     .chat-input button:hover {
       background-color: #2e65d3;
     }
@@ -177,10 +155,10 @@
   <p>I'm here to help you with all your railway needs 🚂</p>
 
   <div class="feature-buttons">
-    <button onclick="sendQuick('Book ticket')">🎟️ Ticket Booking</button>
-    <button onclick="sendQuick('Platform Info')">🛤️ Platform Info</button>
-    <button onclick="sendQuick('Help')">ℹ️ General Help</button>
-    <button onclick="sendQuick('Customer Care')">📞 Customer Care</button>
+    <button onclick="sendQuick('Book ticket')">Ticket Booking</button>
+    <button onclick="sendQuick('Platform Info')">Platform Info</button>
+    <button onclick="sendQuick('Help')">General Help</button>
+    <button onclick="sendQuick('Customer Care')">Customer Care</button>
   </div>
 
   <div class="chat-box" id="chatBox"></div>
@@ -195,7 +173,7 @@
 </div>
 
 <script>
-// List of routes
+// Routes List
 const routesList = [
   "chennai to madurai", "madurai to chennai", "coimbatore to chennai", "chennai to coimbatore",
   "chennai to trichy", "trichy to chennai", "chennai to salem", "salem to chennai",
@@ -250,8 +228,8 @@ async function sendMessage() {
 
   addChat("user", message);
   input.value = "";
-  filterRoutes(); // hide suggestions after sending
-  addChat("bot", "⏳ Typing...");
+  filterRoutes();
+  addChat("bot", "⏳ Sending...");
 
   const response = await fetch("/ask", {
     method: "POST",
@@ -290,6 +268,14 @@ function removeLastBotMessage() {
     chatBox.removeChild(messages[messages.length - 1]);
   }
 }
+
+// ✅ Press Enter to Send
+document.getElementById("userInput").addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    sendMessage();
+  }
+});
 </script>
 
 </body>
