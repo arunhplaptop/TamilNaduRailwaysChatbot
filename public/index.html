@@ -16,7 +16,6 @@
       padding: 10px 20px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
@@ -49,6 +48,7 @@
     .container p {
       color: #555;
       margin-bottom: 20px;
+      font-size: 16px;
     }
 
     .feature-buttons {
@@ -177,10 +177,10 @@
   <p>I'm here to help you with all your railway needs 🚂</p>
 
   <div class="feature-buttons">
-    <button onclick="sendQuick('Book ticket')">Ticket Booking</button>
-    <button onclick="sendQuick('Platform Info')">Platform Info</button>
-    <button onclick="sendQuick('Help')">General Help</button>
-    <button onclick="sendQuick('Customer Care')">Customer Care</button>
+    <button onclick="sendQuick('Book ticket')">🎟️ Ticket Booking</button>
+    <button onclick="sendQuick('Platform Info')">🛤️ Platform Info</button>
+    <button onclick="sendQuick('Help')">ℹ️ General Help</button>
+    <button onclick="sendQuick('Customer Care')">📞 Customer Care</button>
   </div>
 
   <div class="chat-box" id="chatBox"></div>
@@ -195,7 +195,7 @@
 </div>
 
 <script>
-// Routes List
+// List of routes
 const routesList = [
   "chennai to madurai", "madurai to chennai", "coimbatore to chennai", "chennai to coimbatore",
   "chennai to trichy", "trichy to chennai", "chennai to salem", "salem to chennai",
