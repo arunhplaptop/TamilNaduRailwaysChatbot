@@ -1,135 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Ticket Payment - Tamil Nadu Railways</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #f4f8f7;
+      background: #eef5f9;
     }
-
     .navbar {
       background: linear-gradient(to right, #FF9933, #ffffff, #138808);
-      padding: 10px 20px;
+      padding: 12px 20px;
       display: flex;
       align-items: center;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
-
     .navbar img {
-      height: 50px;
+      height: 45px;
     }
-
     .navbar-title {
       font-size: 22px;
       font-weight: bold;
-      color: #000080;
       margin-left: 10px;
+      color: #003366;
     }
-
     .container {
+      background: #fff;
       max-width: 500px;
       margin: 50px auto;
-      background: #fff;
-      padding: 30px;
+      padding: 25px;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
       text-align: center;
     }
-
     h2 {
-      color: #003366;
       margin-bottom: 20px;
+      color: #003366;
     }
-
-    .details {
-      text-align: left;
-      margin-bottom: 25px;
-    }
-
-    .details p {
-      margin: 8px 0;
-      font-size: 16px;
-      color: #555;
-    }
-
-    select, button {
+    input, select, button {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       margin: 10px 0;
       border-radius: 8px;
       border: 1px solid #ccc;
-      font-size: 15px;
     }
-
     button {
-      background-color: #407BFF;
+      background: #407BFF;
       color: #fff;
-      border: none;
-      font-weight: bold;
+      font-size: 16px;
       cursor: pointer;
-      transition: background 0.3s ease;
+      border: none;
     }
-
     button:hover {
-      background-color: #2e65d3;
+      background: #305fdc;
     }
   </style>
 </head>
 <body>
 
 <div class="navbar">
-  <div style="display: flex; align-items: center;">
-    <img src="/logo.png" alt="Tamil Nadu Railways Logo" />
-    <span class="navbar-title">Tamil Nadu Railways Chatbot</span>
-  </div>
+  <img src="/logo.png" alt="Logo">
+  <span class="navbar-title">Tamil Nadu Railways</span>
 </div>
 
 <div class="container">
-  <h2>Ticket Payment</h2>
+  <h2>Confirm Your Ticket</h2>
 
-  <div class="details">
-    <p id="routeInfo">Route: </p>
-    <p id="trainInfo">Train: </p>
-    <p id="passengerName">Name: </p>
-    <p id="passengerGender">Gender: </p>
-    <p id="passengerAge">Age: </p>
-    <p id="passengerDob">Date of Birth: </p>
-  </div>
+  <form id="paymentForm">
+    <input type="text" id="routeInfo" readonly>
+    <input type="text" id="trainInfo" readonly>
+    <input type="text" id="passengerName" readonly>
+    <input type="text" id="gender" readonly>
+    <input type="text" id="age" readonly>
+    <input type="text" id="dob" readonly>
 
-  <select id="paymentMode" required>
-    <option value="">Select Payment Mode</option>
-    <option value="upi">UPI</option>
-    <option value="creditcard">Credit/Debit Card</option>
-    <option value="netbanking">Net Banking</option>
-    <option value="wallet">Mobile Wallet</option>
-  </select>
+    <select required>
+      <option value="">Select Class</option>
+      <option value="Sleeper">Sleeper</option>
+      <option value="AC">AC</option>
+      <option value="Chair Car">Chair Car</option>
+    </select>
 
-  <button onclick="makePayment()">Pay Now</button>
+    <select required>
+      <option value="">Payment Mode</option>
+      <option value="UPI">UPI</option>
+      <option value="Net Banking">Net Banking</option>
+      <option value="Card">Credit/Debit Card</option>
+    </select>
+
+    <button type="submit">Pay Now</button>
+  </form>
 </div>
 
 <script>
-  // Auto-fill data from URL
   const params = new URLSearchParams(window.location.search);
-  document.getElementById("routeInfo").innerText = "Route: " + (params.get("route") || "");
-  document.getElementById("trainInfo").innerText = "Train: " + (params.get("train") || "");
-  document.getElementById("passengerName").innerText = "Name: " + (params.get("name") || "");
-  document.getElementById("passengerGender").innerText = "Gender: " + (params.get("gender") || "");
-  document.getElementById("passengerAge").innerText = "Age: " + (params.get("age") || "");
-  document.getElementById("passengerDob").innerText = "Date of Birth: " + (params.get("dob") || "");
+  document.getElementById("routeInfo").value = params.get("route") || "";
+  document.getElementById("trainInfo").value = params.get("train") || "";
+  document.getElementById("passengerName").value = params.get("name") || "";
+  document.getElementById("gender").value = params.get("gender") || "";
+  document.getElementById("age").value = params.get("age") || "";
+  document.getElementById("dob").value = params.get("dob") || "";
 
-  function makePayment() {
-    const paymentMode = document.getElementById("paymentMode").value;
-    if (!paymentMode) {
-      alert("⚠️ Please select a payment mode!");
-      return;
-    }
-    alert("✅ Payment Successful!\nThank you for booking with Tamil Nadu Railways.");
-    window.location.href = "/index.html"; // Redirect after success
-  }
+  document.getElementById("paymentForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    alert("✅ Ticket booked successfully! Thank you for choosing Tamil Nadu Railways.");
+    window.location.href = "/index.html";
+  });
 </script>
 
 </body>
