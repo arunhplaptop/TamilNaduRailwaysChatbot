@@ -39,12 +39,12 @@ module.exports = {
   "nagercoil to madurai": "Kanyakumari Express (12634) - 05:10 → 09:45",
   "tirunelveli to trichy": "Nellai Express (12632) - 19:50 → 01:00",
   "trichy to tirunelveli": "Kanyakumari Express (12633) - 23:30 → 05:30",
-  "chennai to tenkasi": "Tenkasi Express (16791) - 20:00 → 08:00",
-  "tenkasi to chennai": "Tenkasi Express (16792) - 18:30 → 05:30",
   "chennai to karur": "Rockfort Express (12653) - 23:30 → 06:30",
   "karur to chennai": "Pallavan Express (12606) - 22:20 → 05:10",
   "vellore to tirunelveli": "Nellai Express (12631) - 21:20 → 07:10",
   "tirunelveli to vellore": "Nellai Express (12632) - 19:50 → 06:00",
   "coimbatore to karur": "Cheran Express (12674) - 22:50 → 04:45",
-  "karur to coimbatore": "Rockfort Express (12653) - 23:30 → 03:10"
+  "karur to coimbatore": "Rockfort Express (12653) - 23:30 → 03:10",
+  "tenkasi to chennai": "Tenkasi Express (16792) - 20:50 → 07:20",
+  "chennai to tenkasi": "Chennai Express (16791) - 21:00 → 07:45"
 };
